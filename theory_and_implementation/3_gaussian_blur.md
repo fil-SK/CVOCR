@@ -8,7 +8,7 @@ Gausovo zamućivanje koristi Gausovu formulu kao osnovu.
 
 Ako posmatramo jednodimenzionalni prostor, se ova formula naziva normalna raspodela (distribucija), a alternativno zove se i Gausova raspodela, jer ju je Karl Fridrih Gaus prvi otkrio:
 
-<img src="./report_images/normal_distr.png" width="300px" />
+<img src="../report_images/normal_distr.png" width="300px" />
 
 Slika izvor: https://www.scribbr.com/statistics/standard-normal-distribution/
 
@@ -28,7 +28,7 @@ $$
 
 Ova formula oslikava površinu:
 
-<img src="./report_images/2d_gaussian.png" width="300px" />
+<img src="../report_images/2d_gaussian.png" width="300px" />
 
 Slika izvor: https://commons.wikimedia.org/wiki/File:Gaussian_2d.png
 

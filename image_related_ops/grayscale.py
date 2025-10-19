@@ -22,6 +22,6 @@ def  convert_to_grayscale(img: np.ndarray) -> np.ndarray:
         raise ValueError("Image must have 3 channels. Image shape must be of (H,W,C).")
 
     print(f"Turning image into grayscale")
-    grayscale_coefficients = np.array([G_COEFF, B_COEFF, R_COEFF])
+    grayscale_coefficients = np.array([R_COEFF, G_COEFF, B_COEFF])
     gray_img = np.dot(img, grayscale_coefficients)
     return gray_img.astype(np.uint8)        # np.dot produces float, so this will return the value to 0-255 int range

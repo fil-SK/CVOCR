@@ -79,3 +79,10 @@ Zašto Gausovo zamućivanje a ne "obično" (mean blur)?
 - Obično zamućivanje funkcioniše tako što svakom pikselu daje podjednaku težinu - to nije prirodno jer ne nosi svaki piksel jednaku količinu informacije na slici. Primena ovakvog zamućivanja dovodi do "blocky artefacts".
 - Gausovo zamućivanje je efikasnije i bolje u očuvanju ivica, a funkcioniše po principu da je svaki piksel težinski usrednjen prema svojim susednim pikselima.
 
+<a href="./theory_and_implementation/3_gaussian_blur.md">Teorija i implementacija</a>
+
+### 4. Keni algoritam za detekciju ivica
+
+Keni algoritam (Canny Edge Detection algorithm) koristi se za detekciju različitih vrsta ivica na slikama. Konkretno, u primeni ovog projekta, iskoristićemo ga da detektujemo ivice tablica. Algoritam će, između ostalog detektovati i druge ivice, ali ćemo njegov output iskoristiti da, kasnije, iskoristimo ivice koje formiraju zatvorene konture (pravougaonik - tablica), odakle ćemo vršiti ekstrakciju teksta i OCR.
+
+<a href="./theory_and_implementation/4_canny_alg.md">Teorija i implementacija</a>
