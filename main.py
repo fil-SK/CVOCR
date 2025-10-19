@@ -15,6 +15,7 @@ if __name__ == '__main__':
     # ------ STEP 1: Grayscale START ------
     # Turn image into grayscale
     gray_img_nparray = convert_to_grayscale(img_nparray)
+    print(f"Grayscale image's shape: {gray_img_nparray.shape}")     # (H,W)
 
     # Display grayscale image to verify
     img_gray = Image.fromarray(gray_img_nparray)
