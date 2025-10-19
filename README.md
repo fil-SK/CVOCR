@@ -1,2 +1,3 @@
-# CVOCR
-Manual implementation of the pipeline for OCR License Plate Recognition 
+Install CV:
+
+pip install opencv-python
