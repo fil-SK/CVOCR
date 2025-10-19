@@ -1,5 +1,8 @@
+import cv2
 from PIL import Image
 
+from image_related_ops.gaussian_blur import calculate_sigma_from_kernel_size, create_gaussian_kernel, \
+    perform_convolution
 from image_related_ops.grayscale import convert_to_grayscale
 from image_related_ops.load_image import load_image, save_current_image_state
 
@@ -22,6 +25,24 @@ if __name__ == '__main__':
     img_gray.show()
 
     # Save the image state in current step
-    save_current_image_state(gray_img_nparray, TARGET_IMAGE, "1", "grayscale")
+    save_current_image_state(gray_img_nparray, "image", "1", "grayscale")
 
     # ------ STEP 1: Grayscale END ------
+
+    # ------ STEP 2: Gaussian Blur START ------
+    sigma = calculate_sigma_from_kernel_size(5)
+    gaussian_kernel = create_gaussian_kernel(kernel_size=5, sigma=sigma)
+    gaussian_blur_applied = perform_convolution(gray_img_nparray, gaussian_kernel)
+
+    # Display blurred image to verify
+    blurred = Image.fromarray(gaussian_blur_applied)
+    blurred.show()
+
+    # Save the image state in current step
+    save_current_image_state(gaussian_blur_applied, "image", "2", "gaussian_blur")
+
+    # ------ STEP 2: Gaussian Blur END ------
+
+    # ------ STEP 3: Canny edge detection algorithm START ------
+
+    # ------ STEP 3: Canny edge detection algorithm END ------
