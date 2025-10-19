@@ -8,5 +8,3 @@ if __name__ == '__main__':
     # Load the image
     img_nparray = load_image(f"{IMAGE_DIR}/{TARGET_IMAGE}")
     print(f"Loaded image's shape: {img_nparray.shape}")
-
-    
