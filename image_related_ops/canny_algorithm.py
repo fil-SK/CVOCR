@@ -68,7 +68,7 @@ def find_strength_and_orientation_of_edge(conv_img_x: np.ndarray, conv_img_y: np
     strength_converted = scaled_strength_values * 255                   # Converted into [0, 255] range
 
     # Find the orientation of the edge
-    orientation = np.arctan2(conv_img_x, conv_img_y)                    # How is edge oriented - where it points to
+    orientation = np.arctan2(conv_img_y, conv_img_x)                    # How is edge oriented - where it points to
 
     return strength_converted, orientation
 
