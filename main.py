@@ -60,6 +60,34 @@ if __name__ == '__main__':
 
     # ------ STEP 4: Find contours START ------
 
-    nodes = detect_contours(cannyfied_image)
+    contours = detect_contours(cannyfied_image)
+    # TODO: Visualisation of contours
+    # TODO: Simplification of contours
+
+    # TODO: Mozes da ubacis u canny svaki medjukorak da se vidi
+
+
+
 
     # ------ STEP 4: Find contours END ------
+
+    # ------ STEP 5: Contour sorting START ------
+
+    # TODO: Sortiraj konture od najvece ka najmanjoj - najveca kontura je najverovatnije zapravo tablica
+    # TODO: cv2.approxPolyDP implementacija
+
+    # ------ STEP 5: Contour sorting END ------
+
+    # ------ STEP 6: Extract licence plate START ------
+
+    # TODO: cv2.boundingRect(plate_contour)
+    # TODO: cv2.threshold
+
+    # ------ STEP 6: Extract licence plate END ------
+
+    # ------ STEP 7: Perform OCR START ------
+    
+    # TODO: plate_number = pytesseract.image_to_string(thresh, config='--psm 8')  # Treat it as a single word
+    #         return plate_number.strip()
+
+    # ------ STEP 7: Perform OCR END ------

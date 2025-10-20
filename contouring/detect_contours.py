@@ -107,3 +107,5 @@ def detect_contours(cannyfied_image: np.ndarray) -> np.ndarray:
                 # Once list of pixels that should be checked is empty - we are finished
                 # Add all collected points to the main list of contours
                 contours.append(contour)
+
+    return contours
