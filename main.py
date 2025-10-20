@@ -1,6 +1,7 @@
 import cv2
 from PIL import Image
 
+from image_related_ops.canny_algorithm import canny_edge_detection
 from image_related_ops.gaussian_blur import calculate_sigma_from_kernel_size, create_gaussian_kernel, \
     perform_convolution
 from image_related_ops.grayscale import convert_to_grayscale
@@ -43,6 +44,13 @@ if __name__ == '__main__':
 
     # ------ STEP 2: Gaussian Blur END ------
 
+
     # ------ STEP 3: Canny edge detection algorithm START ------
+
+    cannyfied_image = canny_edge_detection(gaussian_blur_applied, low_threshold=30, high_threshold=60)
+
+    # Display image after Canny to verify
+    cannyfied = Image.fromarray(cannyfied_image)
+    cannyfied.show()
 
     # ------ STEP 3: Canny edge detection algorithm END ------
