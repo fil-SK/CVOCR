@@ -1,7 +1,8 @@
 import cv2
 from PIL import Image
 
-from contouring.detect_contours import detect_contours
+from contouring.detect_contours import detect_contours, visualise_contrours, simplify_contours, \
+    simplify_contours_with_tolerance
 from image_related_ops.canny_algorithm import canny_edge_detection
 from image_related_ops.gaussian_blur import calculate_sigma_from_kernel_size, create_gaussian_kernel, \
     perform_convolution
@@ -61,13 +62,17 @@ if __name__ == '__main__':
     # ------ STEP 4: Find contours START ------
 
     contours = detect_contours(cannyfied_image)
-    # TODO: Visualisation of contours
-    # TODO: Simplification of contours
+    visualise_contrours(cannyfied_image, contours, 4, "contours_colored")
 
-    # TODO: Mozes da ubacis u canny svaki medjukorak da se vidi
+    simplified_contours = simplify_contours(contours)
+    if simplified_contours is not None:
+        visualise_contrours(cannyfied_image, simplified_contours, 5, "simplified_contours_colored")
 
-
-
+    # However, this implementation was too strict as it was expecting literal direction flip
+    # In reality that is not the case, so we need to account for smaller degree changes, like 20 degrees e.g.
+    simplified_contours_w_tolerance = simplify_contours_with_tolerance(contours, angle_tolerance=20)
+    if simplified_contours_w_tolerance is not None:
+        visualise_contrours(cannyfied_image, simplified_contours_w_tolerance, 5.1, "simplified_contours_tolerance_colored")
 
     # ------ STEP 4: Find contours END ------
 
@@ -86,7 +91,7 @@ if __name__ == '__main__':
     # ------ STEP 6: Extract licence plate END ------
 
     # ------ STEP 7: Perform OCR START ------
-    
+
     # TODO: plate_number = pytesseract.image_to_string(thresh, config='--psm 8')  # Treat it as a single word
     #         return plate_number.strip()
 

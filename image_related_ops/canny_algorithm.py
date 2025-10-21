@@ -2,6 +2,8 @@ from typing import Tuple
 
 import numpy as np
 
+from image_related_ops.load_image import save_current_image_state
+
 # Used as a placeholder max value for one pixel
 MAX_UINT8 = 255
 
@@ -222,6 +224,9 @@ def canny_edge_detection(blurred_img_ndarray: np.ndarray, low_threshold: int, hi
     convolved_img_x = perform_convolution_image_sobel_filter(blurred_img_ndarray, sobel_x)
     convolved_img_y = perform_convolution_image_sobel_filter(blurred_img_ndarray, sobel_y)
 
+    # Save image after this step
+    save_current_image_state(convolved_img_x, "image", "2.1", "convolved_with_sobel_x")
+    save_current_image_state(convolved_img_y, "image", "2.2", "convolved_with_sobel_y")
 
     # Find the strength (magnitude) and orientation of the edge
     strength, orientation = find_strength_and_orientation_of_edge(convolved_img_x, convolved_img_y)
@@ -229,10 +234,12 @@ def canny_edge_detection(blurred_img_ndarray: np.ndarray, low_threshold: int, hi
     ## Perform NMS
     print("Performing NMS...")
     nms_output_img_array = perform_nms(strength, orientation)
+    save_current_image_state(nms_output_img_array, "image", "2.3", "after_nms")
 
     # Perform double-threshold
     print("Performing Double Threshold...")
     double_threshold_output = perform_double_threshold(nms_output_img_array, low_threshold=low_threshold, high_threshold=high_threshold)
+    save_current_image_state(double_threshold_output, "image", "2.4", "after_double_threshold")
 
     # Perform hysteresis step
     print("Tracking edge by Hysteresis step...")
