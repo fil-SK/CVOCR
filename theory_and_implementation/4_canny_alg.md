@@ -78,7 +78,7 @@ Prema [Canny OpenCV dokumentaciji](https://docs.opencv.org/4.x/da/d22/tutorial_p
 - 2. Izračunavanje intenziteta gradijenta slike
 - 3. Non-Maximum Suppression
 - 3.5. U određenim resursima (npr. [Wikipedia](https://en.wikipedia.org/wiki/Canny_edge_detector#Double_threshold)) postoji međukorak između NMS-a i histerezisa, gde se vrši Double Tresholding.
-4. Hysteresis Thresholding
+- 4. Hysteresis Thresholding
 
 ### Implementacija: Redukcija smetnji
 

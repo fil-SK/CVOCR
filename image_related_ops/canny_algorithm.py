@@ -248,17 +248,17 @@ def canny_edge_detection(blurred_img_ndarray: np.ndarray, low_threshold: int, hi
     strength, orientation = find_strength_and_orientation_of_edge(convolved_img_x, convolved_img_y)
 
     ## Perform NMS
-    print("Performing NMS...")
+    print("Performing NMS")
     nms_output_img_array = perform_nms(strength, orientation)
     save_current_image_state(nms_output_img_array, "image", "2.3", "after_nms")
 
     # Perform double-threshold
-    print("Performing Double Threshold...")
+    print("Performing Double Threshold")
     double_threshold_output = perform_double_threshold(nms_output_img_array, low_threshold=low_threshold, high_threshold=high_threshold)
     save_current_image_state(double_threshold_output, "image", "2.4", "after_double_threshold")
 
     # Perform hysteresis step
-    print("Tracking edge by Hysteresis step...")
+    print("Tracking edge by Hysteresis step")
     img_magnitude_h, img_magnitude_w = strength.shape  # To iterate over every pixel
     hysteresis_output = track_edge_by_hysteresis(double_threshold_output, img_magnitude_h, img_magnitude_w)
 

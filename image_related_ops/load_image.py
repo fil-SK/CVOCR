@@ -15,7 +15,7 @@ def load_image(image_path : str) -> np.ndarray:
     Returns:
         (np.ndarray): NumPy image representation.
     """
-    print(f"Loading {image_path}")
+    print(f"Loading an image {image_path}")
     img = (Image.open(image_path).convert("RGB"))   # ensures 3 channels, in this order: (H, W, C)
     #img.show()
 
@@ -43,7 +43,8 @@ def save_current_image_state(img_nparray: np.ndarray, img_name: str, step: str, 
     os.makedirs(IMAGE_STATES_DIR, exist_ok=True)
 
     # Form image output name
-    filename = f"{img_name}_{step}_{action}.png"
+    name, _ = os.path.splitext(img_name)
+    filename = f"{name}_{step}_{action}.png"
     path = os.path.join(IMAGE_STATES_DIR, filename)
 
     # Convert NumPy array to PIL image
@@ -57,7 +58,7 @@ def save_current_image_state(img_nparray: np.ndarray, img_name: str, step: str, 
 
     # Save as PNG (lossless)
     img.save(path)
-    print(f"Saved image on: {path}")
+    print(f"Saved image on: {path}\n")
 
 
 def display_resulting_image(image_np_arr: np.ndarray) -> None:
