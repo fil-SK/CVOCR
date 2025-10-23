@@ -10,28 +10,26 @@ from image_related_ops.canny_algorithm import canny_edge_detection
 from image_related_ops.gaussian_blur import calculate_sigma_from_kernel_size, create_gaussian_kernel, \
     perform_convolution
 from image_related_ops.grayscale import convert_to_grayscale
-from image_related_ops.load_image import load_image, save_current_image_state
+from image_related_ops.load_image import load_image, save_current_image_state, display_resulting_image
 
 IMAGE_DIR = "./test_images"
 TARGET_IMAGE = "skoda_test.png"
+DISPLAY_IMAGE = False
 
 if __name__ == '__main__':
 
-    # Load the image
-    print(f"Loading image: {IMAGE_DIR}/{TARGET_IMAGE}")
-    img_nparray = load_image(f"{IMAGE_DIR}/{TARGET_IMAGE}")
+    # ------ STEP 0: Loading START ------
+    print(f"Loading an image: {IMAGE_DIR}/{TARGET_IMAGE}")
+    img_nparray = load_image(f"{IMAGE_DIR}/{TARGET_IMAGE}")         # Image is of shape (H,W,C)
     print(f"Original image shape: {img_nparray.shape}")
+    # ------ STEP 0: Loading END ------
 
 
     # ------ STEP 1: Grayscale START ------
-
-    # Turn image into grayscale
     gray_img_nparray = convert_to_grayscale(img_nparray)
     print(f"Grayscale image's shape: {gray_img_nparray.shape}")     # (H,W)
-
-    # Display grayscale image to verify
-    #img_gray = Image.fromarray(gray_img_nparray)
-    #img_gray.show()
+    if DISPLAY_IMAGE:
+        display_resulting_image(gray_img_nparray)
     save_current_image_state(gray_img_nparray, "image", "1", "grayscale")
 
     # ------ STEP 1: Grayscale END ------
@@ -42,10 +40,8 @@ if __name__ == '__main__':
     sigma = calculate_sigma_from_kernel_size(5)
     gaussian_kernel = create_gaussian_kernel(kernel_size=5, sigma=sigma)
     gaussian_blur_applied = perform_convolution(gray_img_nparray, gaussian_kernel)
-
-    # Display blurred image to verify
-    #blurred = Image.fromarray(gaussian_blur_applied)
-    #blurred.show()
+    if DISPLAY_IMAGE:
+        display_resulting_image(gaussian_blur_applied)
     save_current_image_state(gaussian_blur_applied, "image", "2", "gaussian_blur")
 
     # ------ STEP 2: Gaussian Blur END ------
@@ -54,10 +50,8 @@ if __name__ == '__main__':
     # ------ STEP 3: Canny edge detection algorithm START ------
 
     cannyfied_image = canny_edge_detection(gaussian_blur_applied, low_threshold=30, high_threshold=60)      # TODO: Play around with these values and check how it responds to
-
-    # Display image after Canny to verify
-    #cannyfied = Image.fromarray(cannyfied_image)
-    #cannyfied.show()
+    if DISPLAY_IMAGE:
+        display_resulting_image(cannyfied_image)
     save_current_image_state(cannyfied_image, "image", "3", "canny_edge_detection")
 
     # ------ STEP 3: Canny edge detection algorithm END ------

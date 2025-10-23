@@ -58,3 +58,17 @@ def save_current_image_state(img_nparray: np.ndarray, img_name: str, step: str, 
     # Save as PNG (lossless)
     img.save(path)
     print(f"Saved image on: {path}")
+
+
+def display_resulting_image(image_np_arr: np.ndarray) -> None:
+    """
+    Displays an image with default photo app.
+
+    Args:
+        image_np_arr (np.ndarray): NumPy image representation of an image to be displayed.
+
+    Returns:
+        (None)
+    """
+    img_to_show = Image.fromarray(image_np_arr)
+    img_to_show.show()
