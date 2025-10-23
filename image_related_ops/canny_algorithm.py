@@ -205,7 +205,7 @@ def canny_edge_detection(blurred_img_ndarray: np.ndarray, low_threshold: int, hi
     Returns:
         (np.ndarray): Edge detection result.
     """
-    print("Performing Canny Edge Detection...")
+    print("Performing Canny Edge Detection")
 
     # Prepare Sobel operators
     # Sobel_y inverses 1st and 3rd row, because, "on paper", y-axis goes upward, but in image processing, y-axis goes downward
