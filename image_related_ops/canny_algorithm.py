@@ -1,7 +1,5 @@
 from typing import Tuple
-
 import numpy as np
-
 from image_related_ops.load_image import save_current_image_state
 
 # Used as a placeholder max value for one pixel
@@ -18,10 +16,30 @@ STRONG_EDGE_UINT8_VALUE = 255       # White
 WEAK_EDGE_UINT8_VALUE = 80          # Gray
 NO_EDGE_UINT8_VALUE = 0             # Black
 
+def prepare_sobel_kernels() -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Creates x and y Sobel kernels. Compared to their mathematical formulas, here Sobel kernels have inverted
+    1st and 3rd row, because, mathematically, y-axis rises up, but in image processing y-axis rises down.
+
+    Args:
+        (None)
+    Returns:
+        Tuple[np.ndarray, np.ndarray]: x and y Sobel kernels.
+    """
+    print("Preparing Sobel kernel")
+    sobel_x = np.array([[-1, 0, 1],
+                        [-2, 0, 2],
+                        [-1, 0, 1]], dtype=np.float32)
+
+    sobel_y = np.array([[1, 2, 1],
+                        [0, 0, 0],
+                        [-1, -2, -1]], dtype=np.float32)
+
+    return sobel_x, sobel_y
+
 def perform_convolution_image_sobel_filter(img_nparray: np.ndarray, sobel_kernel: np.ndarray) -> np.ndarray:
     """
-    Perform convolution of image with Sobel operator. Convolution is done with regard to specific dimension
-    of Sobel operator passed.
+    Perform convolution of an image, processed with Gaussian Blur, with Sobel kernel.
 
     Args:
         img_nparray: Image with Gaussian Blur applied.
@@ -38,7 +56,7 @@ def perform_convolution_image_sobel_filter(img_nparray: np.ndarray, sobel_kernel
     # Pad the image to handle borders
     pad_h = sobel_h // 2
     pad_w = sobel_w // 2
-    padded_img = np.pad(img_nparray, ((pad_h, pad_h), (pad_w, pad_w)), mode='constant', constant_values=0) # pads with zeros
+    padded_img = np.pad(img_nparray, ((pad_h, pad_h), (pad_w, pad_w)), mode='constant', constant_values=0)  # pads with zeros, for most neutral approach to handle outside of image
 
     # Placeholder variable for output image
     output = np.zeros_like(img_nparray, dtype=float)
@@ -55,7 +73,7 @@ def perform_convolution_image_sobel_filter(img_nparray: np.ndarray, sobel_kernel
 
 def find_strength_and_orientation_of_edge(conv_img_x: np.ndarray, conv_img_y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     """
-    Calculates the magnitude and orientation of edge on image convolved with Sobel kernel.
+    Calculates the magnitude and orientation of an edge on an image convolved with Sobel kernel.
 
     Args:
         conv_img_x (np.ndarray): Image convolved with x-Sobel kernel.
@@ -197,30 +215,28 @@ def track_edge_by_hysteresis(double_threshold_output: np.ndarray, img_magnitude_
 
 def canny_edge_detection(blurred_img_ndarray: np.ndarray, low_threshold: int, high_threshold: int) -> np.ndarray:
     """
-    Perform Canny Edge Detection algorithm to detect all edges in an image.
+    Perform Canny Edge Detection algorithm to detect all edges in an image. Function performs the following steps:
+    - Preparing x and y Sobel kernels
+    - Convolves Gaussian Blurred image with Sobel kernels
+    - Finds the strength and an orientation of an edge
+    - NMS, for edge thinning
+    - Double threshold, for noise reduction
+    - Hysteresis, for edge tracking
 
     Args:
         blurred_img_ndarray (np.ndarray): Image blurred with Gaussian Blur.
+        low_threshold (int): If edge value is lower than this threshold, it's definitely a noise.
+        high_threshold (int): If edge value is equal or greater than this threshold, it's definitely an edge.
 
     Returns:
         (np.ndarray): Edge detection result.
     """
     print("Performing Canny Edge Detection")
 
-    # Prepare Sobel operators
-    # Sobel_y inverses 1st and 3rd row, because, "on paper", y-axis goes upward, but in image processing, y-axis goes downward
-    print("Preparing Sobel kernel...")
-    sobel_x = np.array([[-1, 0, 1],
-                              [-2, 0, 2],
-                              [-1, 0, 1]], dtype=np.float32)
-
-    sobel_y = np.array([[1, 2, 1],
-                             [0, 0, 0],
-                             [-1, -2, -1]], dtype=np.float32)
-
-
     # Perform convolution of an image with Sobel kernel
-    print("Convolving image with Sobel kernel...")
+    sobel_x, sobel_y = prepare_sobel_kernels()
+
+    print("Convolving image with Sobel kernel")
     convolved_img_x = perform_convolution_image_sobel_filter(blurred_img_ndarray, sobel_x)
     convolved_img_y = perform_convolution_image_sobel_filter(blurred_img_ndarray, sobel_y)
 
