@@ -4,9 +4,10 @@ from PIL import Image
 
 IMAGE_STATES_DIR = "image_states"
 
+
 def load_image(image_path : str) -> np.ndarray:
     """
-    Loads image from the path, and returns ndarray image representation.
+    Loads an image from the specified path, and returns ndarray image representation.
 
     Args:
         image_path (str): Path to the image.
@@ -16,7 +17,7 @@ def load_image(image_path : str) -> np.ndarray:
     """
     print(f"Loading {image_path}")
     img = (Image.open(image_path).convert("RGB"))   # ensures 3 channels, in this order: (H, W, C)
-    img.show()
+    #img.show()
 
     return np.array(img)
 
@@ -24,8 +25,8 @@ def load_image(image_path : str) -> np.ndarray:
 def save_current_image_state(img_nparray: np.ndarray, img_name: str, step: str, action:str) -> None:
     """
     Saves current state of the image. This is used to track and verify the entire process, enabling the user to
-    pass the NumPy array current representation of the image, and to have such image transformed into PNG file and
-    saved on the system.
+    pass the current NumPy array representation of the image, and to have such image transformed into PNG file
+    and saved on the system.
 
     Args:
          img_nparray (np.ndarray): NumPy image representation.
