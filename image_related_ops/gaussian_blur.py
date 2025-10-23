@@ -20,13 +20,12 @@ def calculate_sigma_from_kernel_size(kernel_size: int) -> float:
 def create_gaussian_kernel(kernel_size:int, sigma:float) -> np.ndarray:
     """
     Create a gaussian kernel from the given kernel size and perform the Gaussian 2D formula on the kernel values,
-    using specified kernel size and passed sigma value, in order to form teh Gaussian kernel.
+    to form the weight values, using specified kernel size and passed sigma value.
 
     Args:
         kernel_size (int): Kernel size. For 5x5 kernel, kernel_size is 5.
         sigma (float): Sigma value. Calculated using the OpenCV formula.
     """
-
     # Generate Kernel matrix
     half_width = kernel_size // 2     # For kernel=5, will return 5 // 2 = 2
     x, y = np.mgrid[-half_width:half_width + 1, -half_width:half_width + 1]     # Makes a nxn matrix, with values -2,-1,0,1,2
@@ -66,7 +65,7 @@ def perform_convolution(image_nparray: np.ndarray, gaussian_kernel: np.ndarray) 
     # Perform convolution
     for i in range(img_h):
         for j in range(img_w):
-            # Extract region of interest
+            # Extract region of interest within the image - where we apply the kernel
             region = padded_img[i:i + k_h, j:j + k_w]
             # Multiply elementwise and sum
             output[i, j] = np.sum(region * gaussian_kernel)

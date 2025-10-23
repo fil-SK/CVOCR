@@ -24,6 +24,8 @@ root
 |--- image_related_ops
     |--- load_image.py
     |--- grayscale.py
+|--- contouring
+    |--- detect_contours.py
 |--- test_images
 |--- main.py
 |--- README.md
@@ -73,11 +75,23 @@ Nakon učitavanja slike, prvi (stvarni) proces u pipeline-u je konverzija RGB sl
 
 ### 3. Gausovo zamućivanje
 
-Crno-belo je uprostilo sliku, ali ovo možemo odvesti i korak dalje. Slika je i dalje s previše "detalja" - ivice automobila su jasne i oštre. Ovo potencijalno može napraviti problem pri detekciji ivica, pa u tom slučaju radimo zamućivanje (blur).
+#### 3.1. Zašto zamućivanje?
+Crno-belo je uprostilo sliku, ali ovo možemo odvesti i korak dalje. Slika je i dalje s previše "detalja" - ivice automobila su jasne i oštre. Korišćenjem zamućivanja:
+- uklanjamo noise - sitne detalje
+- ne uništavamo glavne, bitne strukture - ivice
 
-Zašto Gausovo zamućivanje a ne "obično" (mean blur)?
-- Obično zamućivanje funkcioniše tako što svakom pikselu daje podjednaku težinu - to nije prirodno jer ne nosi svaki piksel jednaku količinu informacije na slici. Primena ovakvog zamućivanja dovodi do "blocky artefacts".
-- Gausovo zamućivanje je efikasnije i bolje u očuvanju ivica, a funkcioniše po principu da je svaki piksel težinski usrednjen prema svojim susednim pikselima.
+#### 3.2. Zašto Gausovo zamućivanje a ne "obično" (box blur)?
+
+Kada posmatramo Box Blur, on funkcioniše tako što na nivou posmatranog prozora kernela računa srednju vrednost. Npr. za kernel 3x3, imamo 9 piksela, tako da će svi pikseli biti pomnoženi težinskim koeficijentom 1/9 - njihova piksel vrednost puta 1/9.
+- Ovaj pristup nije najbolji, zato što nisu svi pikseli na slici jednaki. Neki su npr. bela pozadina dok su neki posmatrani objekat. Ne nosi svaki piksel jednaku količinu informacije.
+
+Primena Box Blur-a može dovesti do "kockaste" slike:
+
+<img src="./report_images/box_blur.png" />
+
+#### 3.3. Gausovo zamućivanje
+
+Gausovo zamućivanje je efikasnije i bolje u očuvanju ivica, a funkcioniše po principu da je svaki piksel težinski usrednjen prema svojim susednim pikselima.
 
 <a href="./theory_and_implementation/3_gaussian_blur.md">Teorija i implementacija</a>
 

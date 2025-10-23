@@ -31,34 +31,28 @@ if __name__ == '__main__':
     if DISPLAY_IMAGE:
         display_resulting_image(gray_img_nparray)
     save_current_image_state(gray_img_nparray, "image", "1", "grayscale")
-
     # ------ STEP 1: Grayscale END ------
 
 
     # ------ STEP 2: Gaussian Blur START ------
-
     sigma = calculate_sigma_from_kernel_size(5)
     gaussian_kernel = create_gaussian_kernel(kernel_size=5, sigma=sigma)
     gaussian_blur_applied = perform_convolution(gray_img_nparray, gaussian_kernel)
     if DISPLAY_IMAGE:
         display_resulting_image(gaussian_blur_applied)
     save_current_image_state(gaussian_blur_applied, "image", "2", "gaussian_blur")
-
     # ------ STEP 2: Gaussian Blur END ------
 
 
     # ------ STEP 3: Canny edge detection algorithm START ------
-
     cannyfied_image = canny_edge_detection(gaussian_blur_applied, low_threshold=30, high_threshold=60)      # TODO: Play around with these values and check how it responds to
     if DISPLAY_IMAGE:
         display_resulting_image(cannyfied_image)
     save_current_image_state(cannyfied_image, "image", "3", "canny_edge_detection")
-
     # ------ STEP 3: Canny edge detection algorithm END ------
 
 
     # ------ STEP 4: Find contours START ------
-
     contours = detect_contours(cannyfied_image)
     visualise_contrours(cannyfied_image, contours, 4, "contours_colored")
 
