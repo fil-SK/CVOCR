@@ -127,6 +127,7 @@ Ivica nam, obično, nikad nije finalni cilj. Ivica je jedan od međukoraka za da
 NMS (Non-Maximum Suppression) se koristi kao rešenje ovog problema. Više piksela koji su "grupisani oko ivice" hoćemo da proredimo tako da **ivica bude formirana od 1px**.
 
 <img src="../report_images/nms_before_after.png" width="400px" />
+
 *Slika iznad: pre NMS; Slika ispod: nakon NMS; Izvor slike: Canny Edge Detection, Computerphile, YouTube snimak*
 
 Izvor: Canny Edge Detection, Computerphile, YouTube snimak: https://www.youtube.com/watch?v=sRFM5IEqR2w&t
@@ -137,6 +138,26 @@ NMS radi tako što, za svaki piksel, posmatra da li je njegova vrednost lokalni 
 - Ovde je bitno da su nam bitni susedni pikseli koji su "pored" ivice, a ne NA ivici.
 - "Na ivici" bi označavalo zapravo tu ivicu, nije nam bitno da li je ono što već znamo da je ivica dominantno ili ne. Hoćemo da tu ivicu stanjimo, tako da želimo da njene bordere učinimo manjim - zato nas zanimaju pikseli oko ivice.
 
+Ako imamo ovakvu situaciju:
+
+<img src="../report_images/img_pixel_representation.png" width="500px" />
+
+Tada, u slučaju ovakvih ivica, nas zanimaju **ovi susedi**:
+
+<img src="../report_images/we_care_for_these_edges.png" width="400px" />
+
+- U kodu, ti susedi su označeni kao `pixel_ahead` i `pixel_before`, kao pozicioni u odnosu na posmatrani piksel.
+
+Kada, po ovom pristupu, analiziramo svaki piksel, da li je on lokalni maksimum, primenjeno na celu sliku, ovo će rezultovati tankim linijama koje predstavljaju ivice.
+
+##### Korak 1: Određivanje orijentacije ivice na osnovu orijentacije gradijenta
+
+Imamo ugao gradijenta, u radijanima, koji ćemo iskoristiti da odredimo ugao ivice.
+- Radi intuitivnijeg i lakšeg rada, radijane prebacujemo u stepene.
+
+Dalje, vršimo aproksimaciju. Nije nam cilj da odredimo tačan ugao u stepen, već da okvirno znamo gde se ivica nalazi, kako bismo mogli da je procesuiramo. Znamo da se ivica nalazi normalno u odnosu an ugao gradijenta. Ugao gradijenta aproksimiramo na bliži ugao, određujemo normalni na njega i odatle dobijamo koji je tip ivice:
+
+<img src="../report_images/angle_approx.png" width="500px" />
 
 Izvor: OpenCV docs: 
 
