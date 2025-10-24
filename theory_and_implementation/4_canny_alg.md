@@ -172,6 +172,9 @@ Mapiranje aproksimacije uglova i ivica je:
 
 Na kraju, proveravamo da li je trenutni piksel lokalni maksimum između svojih relevantnih suseda, odnosno između `pixel_before` i `pixel_after` suseda. Ako jeste, onda ga zadržavamo, a ako nije, potiskujemo ga (supression - postavljamo na 0).
 
+##### Dodatni izvor za pogledati
+- RO-1.0X104: Non-Maximal Suppression in Canny Edge Detection Algorithm, Deep Eigen, YouTube snimak: https://www.youtube.com/watch?v=9cpTmJCsI0M
+
 ### Implementacija: Double Threshold
 
 Tehnika dvostrukog praga u nekim izvorima izdvojena je kao zasebna, dok je u OpenCV implementaciji integrisana u Hysteresis Threshold korak.
@@ -200,35 +203,21 @@ Kada se vrši klasifikacija obrađivanog piksela:
 Na taj način postigli smo da pikseli imaju "jednaku jačinu", odnosno da se ne oslanjamo na njihove vrednosti, već, "jak piksel" koji predstavlja ivicu ima MAX vrednost, dok "slab piksel" ima neku srednju vrednost.
 - Vrednosti konstanti uzete su kao standarne vrednosti boja: 255 je bela, dok je 80 obično uzimana vrednost za sivu (srednja vrednost između bele, koja je najviša vrednost, i crne koja je najniža vrednost).
 
-Izvor: OpenCV docs: 
+### Implementacija: Hysteresis Step
 
-U određ
+Na samom kraju, vrši se korak histerezisa.
 
-TODO objašnjenje, kroz ove izvore što sam video
+U ovom trenutku, nakon Double Threshold-a, određeni pikseli, koji su bili ispod `low_threshold` vrednosti, su potisnuti. Preostali pikseli imaju ili `STRONG_EDGE_UINT8_VALUE` ili `WEAK_EDGE_UINT8_VALUE` vrednost, i to, definitivno ivice, i možda ivice a možda smetnja, respektivno.
 
-Za double threshold:
-After application of non-maximum suppression, the remaining edge pixels provide a more accurate representation of real edges in an image. However, some edge pixels remain that are caused by noise and color variation. To account for these spurious responses, it is essential to filter out edge pixels with a weak gradient value and preserve edge pixels with a high gradient value
+Korak histerezisa predstavlja finalni odlučivač da li su pikseli označeni sa `WEAK_EDGE_UINT8_VALUE` vrednošću deo ivice ili su smetnja. To radi analizirajući sve susede tog "slabog piksela".
+- Ideja ovog koraka utemeljena je na pretpostavci da, ako je taj "slab piksel" deo ivice, onda će morati da bude povezan sa barem jednim pikselom koji je, takođe, deo ivice. Odnosno, "slab piksel" mora da bude povezan sa barem jednim "jakim pikselom".
 
-After you compute:
-
-Gradient magnitude (how strong the edge is), and
-
-Non-Maximum Suppression (to thin it to one pixel wide),
-
-you end up with an image where strong edges have high magnitudes, and weak edges or noise have low magnitudes.
-
-| Category         | Range                           | Interpretation                    |
-| ---------------- | ------------------------------- | --------------------------------- |
-| **Strong edges** | `G >= high_thresh`              | Confidently part of an edge       |
-| **Weak edges**   | `low_thresh <= G < high_thresh` | Maybe an edge, needs confirmation |
-| **Non-edges**    | `G < low_thresh`                | Definitely noise, discard         |
+Algoritam upravo to i radi. Prolazi kroz sve piksele i za svaki piksel koji ima vrednost "slabog piksela", proverava koje vrednosti imaju njegovih 8 (u opštem slučaju) mogućih susednih piksela.
+- Ukoliko postoji barem jedan susedni piksel koji ima vrednost "jakog piksela", tada ćemo i ovaj "slab piksel" smatrati jakim.
+- Inače, ako je okružen "slabim pikselima" kao svim susedima, tada takav piksel smatramo smetnjom i potiskujemo ga.
 
 
-## Izvori
+## Dodatni izvori
 
-- Edge Detection Using Gradients | Edge Detection, First Principles of Computer Vision YouTube snimak: https://www.youtube.com/watch?v=lOEBsQodtEQ
-- Sobel operator, Wikipedia članak: https://en.wikipedia.org/wiki/Sobel_operator
 - Canny Edge Detector | Edge Detection, First Principles of Computer Vision YouTube snimak: https://www.youtube.com/watch?v=hUC1uoigH6s
-- Canny Edge Detector, Wikipedia članak: https://en.wikipedia.org/wiki/Canny_edge_detector
-  - Dobar izvor za korake koje treba sprovesti
-- RO-1.0X104: Non-Maximal Suppression in Canny Edge Detection Algorithm, Deep Eigen, YouTube snimak: https://www.youtube.com/watch?v=9cpTmJCsI0M
+  - Sveobuhvatni pregled Keni detektora ivica.

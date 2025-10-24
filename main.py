@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
 
     # ------ STEP 3: Canny edge detection algorithm START ------
-    cannyfied_image = canny_edge_detection(gaussian_blur_applied, low_threshold=30, high_threshold=60)      # TODO: Play around with these values and check how it responds to
+    cannyfied_image = canny_edge_detection(gaussian_blur_applied, low_threshold=100, high_threshold=200)      # TODO: Play around with these values and check how it responds to
     if DISPLAY_IMAGE:
         display_resulting_image(cannyfied_image)
     save_current_image_state(cannyfied_image, TARGET_IMAGE, "3", "canny_edge_detection")

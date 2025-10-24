@@ -203,15 +203,18 @@ def perform_double_threshold(nms_output_img_array: np.ndarray, low_threshold: in
     return filtered_nms_output
 
 
-def track_edge_by_hysteresis(double_threshold_output: np.ndarray, img_magnitude_h: int, img_magnitude_w: int):
+def track_edge_by_hysteresis(double_threshold_output: np.ndarray, img_magnitude_h: int, img_magnitude_w: int) -> np.ndarray:
     """
-    Weak edges might touch strong or other weak edges. If it touches strong edge, probably belongs with it. Otherwise,
-    it's noise and remove it.
+    Performs final cleaning, determining whether weak edges are actually part of the edge, or if they are just noise.
+    For each weak pixel, it checks all neighboring pixels. If at least one neighbor has strong edge value, then that
+    weak pixel should be kept. Otherwise, that weak pixel touches other weak pixels so it's probably noise, so suppress it.
 
     Args:
-         TODO
+         double_threshold_output (np.ndarray): Array that represents output of double threshold.
+         img_magnitude_h (int): Height of image magnitude.
+         img_magnitude_w (int): Width of image magnitude.
     Returns:
-        TODO
+        (np.ndarray): Array that represents output of hysteresis step.
     """
 
     for i in range(1, img_magnitude_h - 1):
