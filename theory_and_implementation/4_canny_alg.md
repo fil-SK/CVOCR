@@ -140,11 +140,11 @@ NMS radi tako što, za svaki piksel, posmatra da li je njegova vrednost lokalni 
 
 Ako imamo ovakvu situaciju:
 
-<img src="../report_images/img_pixel_representation.png" width="500px" />
+<img src="../report_images/img_pixel_representation.png" width="800px" />
 
 Tada, u slučaju ovakvih ivica, nas zanimaju **ovi susedi**:
 
-<img src="../report_images/we_care_for_these_edges.png" width="400px" />
+<img src="../report_images/we_care_for_these_edges.png" width="800px" />
 
 - U kodu, ti susedi su označeni kao `pixel_ahead` i `pixel_before`, kao pozicioni u odnosu na posmatrani piksel.
 
@@ -157,7 +157,9 @@ Imamo ugao gradijenta, u radijanima, koji ćemo iskoristiti da odredimo ugao ivi
 
 Dalje, vršimo aproksimaciju. Nije nam cilj da odredimo tačan ugao u stepen, već da okvirno znamo gde se ivica nalazi, kako bismo mogli da je procesuiramo. Znamo da se ivica nalazi normalno u odnosu an ugao gradijenta. Ugao gradijenta aproksimiramo na bliži ugao, određujemo normalni na njega i odatle dobijamo koji je tip ivice:
 
-<img src="../report_images/angle_approx.png" width="500px" />
+<img src="../report_images/angle_approx.png" width="800px" />
+
+Na kraju, proveravamo da li je trenutni piksel lokalni maksimum između svojih relevantnih suseda, odnosno između `pixel_before` i `pixel_after` suseda. Ako jeste, onda ga zadržavamo, a ako nije, potiskujemo ga (supression - postavljamo na 0).
 
 Izvor: OpenCV docs: 
 

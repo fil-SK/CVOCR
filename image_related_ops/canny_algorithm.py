@@ -7,9 +7,11 @@ MAX_UINT8 = 255
 
 # Angles used to check for the direction of the gradients
 ANGLE_0_DEGREES = 0
-ANGLE_45_DEGREES = 45
-ANGLE_90_DEGREES = 90
-ANGLE_135_DEGREES = 135
+ANGLE_BETWEEN_0_45_DEGREES = 22.5
+ANGLE_BETWEEN_45_90_DEGREES = 67.5
+ANGLE_BETWEEN_90_135_DEGREES = 112.5
+ANGLE_BETWEEN_13_180_DEGREES = 157.5
+ANGLE_180_DEGREES = 180
 
 # Pixel values for the edges (on black background)
 STRONG_EDGE_UINT8_VALUE = 255       # White
@@ -94,20 +96,30 @@ def find_strength_and_orientation_of_edge(conv_img_x: np.ndarray, conv_img_y: np
 
 
 def check_for_direction_of_edge(angle: np.ndarray):
+    """
+    For passed angle of gradient, in degrees, approximates that angle and provides the coordinates for the edge
+    of such gradient.
+
+    Args:
+        angle (np.ndarray): Gradient angle in degrees.
+
+    Returns:
+        (np.ndarray): Coordinates of an edge's direction.
+    """
     # Approx. as 0 degrees - goes left-right; check above and below
-    if (0 <= angle < 22.5) or (157.5 <= angle <= 180):
+    if (ANGLE_0_DEGREES <= angle < ANGLE_BETWEEN_0_45_DEGREES) or (ANGLE_BETWEEN_13_180_DEGREES <= angle <= ANGLE_180_DEGREES):
         return (0, 1), (0, -1)
 
     # Approx. as 45 degrees
-    elif (22.5 <= angle < 67.5):
+    elif (ANGLE_BETWEEN_0_45_DEGREES <= angle < ANGLE_BETWEEN_45_90_DEGREES):
         return (1, -1), (-1, 1)
 
     # Approx. as 90 degrees
-    elif (67.5 <= angle < 112.5):
+    elif (ANGLE_BETWEEN_45_90_DEGREES <= angle < ANGLE_BETWEEN_90_135_DEGREES):
         return (1, 0), (-1, 0)
 
     # Approx. as 135 degrees
-    elif (112.5 <= angle < 157.5):
+    elif (ANGLE_BETWEEN_90_135_DEGREES <= angle < ANGLE_BETWEEN_13_180_DEGREES):
         return (-1, -1), (1, 1)
 
 
@@ -147,6 +159,7 @@ def perform_nms(strength: np.ndarray, orientation: np.ndarray) -> np.ndarray:
             pixel_before = strength[pixel_before_x, pixel_before_y]
 
             # Keep only local maxima
+
             # We want to keep the original viewed pixel (strength[i,j]) value, but only if he is stronger than his neighbors
             # Otherwise, we suppress the original viewed pixel value
             if (strength[i, j] >= pixel_ahead) and (strength[i, j] >= pixel_before):
