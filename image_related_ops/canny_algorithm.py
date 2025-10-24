@@ -172,10 +172,26 @@ def perform_nms(strength: np.ndarray, orientation: np.ndarray) -> np.ndarray:
 
 def perform_double_threshold(nms_output_img_array: np.ndarray, low_threshold: int, high_threshold: int) -> np.ndarray:
     """
-    After applying NMS, there might remain edges that are, essentially, noise.
+    Takes the NMS output and performs further pixel classification. What remains is either pixel related to the edge,
+    which is useful and should be saved, or pixel that is, essentially, noise, which survived NMS by being local maxima
+    when analyzed. Using threshold values passed as arguments, function classifies whether each specific pixel is
+    noise or not by checking:
+
+    - If pixel is equal or greater than high threshold -> Edge, keep it.
+    - If pixel is below high threshold but equal or greater than low threshold -> Could be either noise or edge, but is kept, just in case.
+    - If pixel is below low threshold -> Suppress it.
+
+    Args:
+        nms_output_img_array (np.ndarray): Array that represents output of NMS step.
+        low_threshold (int): Lower threshold value. Every pixel whose value is below this is suppressed.
+        high_threshold (int): High threshold value. Every pixel whose value is above this is definitely an edge, and thus saved.
+
+    Returns:
+        (np.ndarray): Array that represents output of double threshold.
     """
 
     filtered_nms_output = np.zeros_like(nms_output_img_array)       # Make NumPy array of same shape as NMS-outputed one. Initialize with 0
+                                                                    # This will already hold value 0 for pixels that are suppressed here - those that are below low_threshold
 
     # Find indices where rows and columns are above high threshold
     strong_x, strong_y = np.where(nms_output_img_array >= high_threshold)

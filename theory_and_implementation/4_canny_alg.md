@@ -159,7 +159,46 @@ Dalje, vršimo aproksimaciju. Nije nam cilj da odredimo tačan ugao u stepen, ve
 
 <img src="../report_images/angle_approx.png" width="800px" />
 
+Mapiranje aproksimacije uglova i ivica je:
+
+| Aproks. ugao [stepeni] | Opseg [stepeni] | Ivica |
+| ------------ | ----- | ----- |
+| 0 | 0 - 22.5 i 157.5 - 180 | Vertikalna |
+| 45 | 22.5 - 67.5 | Dijagonala \ |
+| 90 | 67.5 - 112.5 | Horizontalna |
+| 135 | 112.5 - 157.5 | Druga dijagonala / |
+
+##### Korak 2: Zadržavanje ili potiskivanje vrednosti piksela
+
 Na kraju, proveravamo da li je trenutni piksel lokalni maksimum između svojih relevantnih suseda, odnosno između `pixel_before` i `pixel_after` suseda. Ako jeste, onda ga zadržavamo, a ako nije, potiskujemo ga (supression - postavljamo na 0).
+
+### Implementacija: Double Threshold
+
+Tehnika dvostrukog praga u nekim izvorima izdvojena je kao zasebna, dok je u OpenCV implementaciji integrisana u Hysteresis Threshold korak.
+
+Uprošćeno, tehnika dvostrukog praga (iako zvuči kao kineska borilačka veština) zapravo predstavlja klasifikaciju preostalih piksela nakon NMS-a.
+- Nakon NMS-a preostali su samo oni pikseli koji su lokalni maksimum. Oni koji to nisu, potisnuti su - imaju vrednost 0.
+- Međutim, to što je neki piksel lokalni maksimum ne mora nužno da znači da je on istovremeno i nešto što nam je bitno.
+
+U ovom trenutku, od preostalih piksela, možemo da imamo:
+- stvarni, korisni piksel, koji predstavlja neki deo ivice
+- ne koristan piksel koji predstavlja smenju (noise) - bio je dovoljno "jak" da preživi NMS, ali fundamentalno ne predstavlja ono što nama treba
+
+Tehnika dvostrukog praga vrši klasifikaciju piksela, prema ove dve kategorije, i to radi, kao što joj ime kaže, koristeći dve prag (threshold) vrednosti, date kao argument:
+- `low_threshold`: Niži prag. Pikseli koji imaju vrednost nižu od ovog praga smatraju se smetnjama i potiskuju se.
+- `high_threshold`: Viši prag. Pikseli koji imaju vrednost veću ili jednaku ovoj smatraju se relevantnim podatkom koji pripada ivici.
+- Vrednost piksela može biti i između ova dva praga. U tom slučaju njegovo stanje je neodređeno - može biti i smetnja ali i deo ivice. Tada se zadržava.
+
+U kodu se definišu dve konstante:
+- `STRONG_EDGE_UINT8_VALUE = 255`
+- `WEAK_EDGE_UINT8_VALUE = 80`
+
+Kada se vrši klasifikacija obrađivanog piksela:
+- Ako je preko `high_threshold`: Dodeljujemo mu vrednost `STRONG_EDGE_UINT8_VALUE`.
+- Ako je preko `low_threshold` a ispod `high_threshold`: Dodeljujemo mu vrednost `WEAK_EDGE_UINT8_VALUE`.
+
+Na taj način postigli smo da pikseli imaju "jednaku jačinu", odnosno da se ne oslanjamo na njihove vrednosti, već, "jak piksel" koji predstavlja ivicu ima MAX vrednost, dok "slab piksel" ima neku srednju vrednost.
+- Vrednosti konstanti uzete su kao standarne vrednosti boja: 255 je bela, dok je 80 obično uzimana vrednost za sivu (srednja vrednost između bele, koja je najviša vrednost, i crne koja je najniža vrednost).
 
 Izvor: OpenCV docs: 
 
