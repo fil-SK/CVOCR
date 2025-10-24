@@ -192,8 +192,6 @@ def simplify_contours_with_tolerance(list_of_contours: list[list[tuple[int, int]
         if len(contour) < 4:
             continue  # Skip this contour, but maybe some later in the list will be big enough
 
-        contour = smooth_contour(contour, kernel_size=5)
-
         # If we continue, then this contour is at least big enough to form rectangle
         # Now we want to simplify it
         reduced_contour: list[tuple[int, int]] = []
@@ -224,13 +222,82 @@ def simplify_contours_with_tolerance(list_of_contours: list[list[tuple[int, int]
     return simplified_contours
 
 
-def smooth_contour(contour, kernel_size=5):
-    """Apply simple moving average smoothing to contour points."""
-    if len(contour) < kernel_size:
-        return contour
+def calculate_perpendicular_distance(point_for_distance: tuple[int, int], start_point: tuple[int, int], end_point: tuple[int, int])-> float:
 
-    contour = np.array(contour, dtype=np.float32)
-    kernel = np.ones(kernel_size) / kernel_size
-    x_smooth = np.convolve(contour[:, 0], kernel, mode='same')
-    y_smooth = np.convolve(contour[:, 1], kernel, mode='same')
-    return np.stack((x_smooth, y_smooth), axis=1).astype(int).tolist()
+    # Could be much more efficiently implmented via vectors
+
+    x, y = point_for_distance
+    x1, y1 = start_point
+    x2, y2 = end_point
+
+    numerator = abs((y2 - y1) * (x - x1) - (x2 - x1) * (y - y1))
+    denominator = math.sqrt( (y2 - y1)**2 + (x2 - x1)**2 )
+
+    if denominator == 0:        # If start=end points
+        return 0.0
+    else:
+        return numerator / denominator
+
+
+
+def approximate_polygon_contour(list_of_contours):
+    """
+    Uses Douglas-Peucker algorithm - simplified version.
+    """
+
+
+
+    dp_contours = []
+
+    for contour in list_of_contours:
+        if len(contour) < 3:
+            continue
+
+        # Calculate epsilon (tolerance)
+        # You can tweak the multiplier (0.01–0.05 range works best)
+        perimeter = 0.0
+        for i in range(len(contour)):
+            x1, y1 = contour[i]
+            x2, y2 = contour[(i + 1) % len(contour)]
+            perimeter += math.dist((x1, y1), (x2, y2))
+
+        epsilon = 0.02 * perimeter
+
+        simplified = douglas_peucker(contour, epsilon)
+        dp_contours.append(simplified)
+
+    return dp_contours
+
+def douglas_peucker(points_in_contour: list[int, int], epsilon: float):
+
+    # First and last points
+    start_point = points_in_contour[0]
+    end_point = points_in_contour[-1]
+
+    # Find the most distant point from this line, perpendicular to it
+    # That point we will keep
+    max_dist = 0.0
+    idx = -1
+
+    for i in range(1, len(points_in_contour) - 1):
+
+        # Calculate distance from i-th point to the line that connects start and end point
+        d = calculate_perpendicular_distance(points_in_contour[i], start_point, end_point)
+
+        # If the point is further than current max, update flags
+        if d > max_dist:
+            idx = i
+            max_dist = d
+
+    # If max distance greater than epsilon, we keep the point and recursively perform the simplification
+    if max_dist > epsilon:
+
+        # We now have two segments - up to that point[i], and after it
+        first_half = douglas_peucker(points_in_contour[:idx + 1], epsilon)
+        second_half = douglas_peucker(points_in_contour[idx:], epsilon)
+
+        # Merge results, while avoiding duplicate middle point
+        return first_half[:-1] + second_half
+    else:
+        # No points are over epsilon, that means all of them are close enough to the line, and we need to keep all of them
+        return [start_point, end_point]

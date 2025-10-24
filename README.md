@@ -102,11 +102,11 @@ Gausovo zamućivanje je efikasnije i bolje u očuvanju ivica, a funkcioniše po 
 Keni algoritam (Canny Edge Detection algorithm) koristi se za detekciju različitih vrsta ivica na slikama. Konkretno, u primeni ovog projekta, iskoristićemo ga da detektujemo ivice tablica. Algoritam će, između ostalog detektovati i druge ivice, ali ćemo njegov output iskoristiti da, kasnije, iskoristimo ivice koje formiraju zatvorene konture (pravougaonik - tablica), odakle ćemo vršiti ekstrakciju teksta i OCR.
 
 Keni algoritam sastoji se iz nekoliko faza:
-- TODO
-- TODO
-- TODO
-- TODO
-- TODO
+- Redukcija smetnji, Gausovim zamućivanjem kernelom 5x5
+- Izračunavanje intenziteta gradijenta slike: Konvolucija slike i Sobel kernela, izračunavanje snage (magnitude) i orijentacije gradijenta
+- NMS: Ne-maksimalno potiskivanje: Ivice slike svodi na 1 piksel, umesto da se prostire na više piksela
+- Tehnika dvostrukog praga: Izlaz NMS-a klasifikuje u jake i slabe piksele, a ostale potiskuje. Jaki se smatraju da pripadaju ivicama, dok slabi mogu a ne moraju pripadati ivici, već mogu biti smetnje.
+- Histerezis: Finalna klasifikacija koja proverava da li su slabi pikseli deo ivice ili su smetnje.
 
 <a href="./theory_and_implementation/4_canny_alg.md">Teorija i implementacija</a>
 
