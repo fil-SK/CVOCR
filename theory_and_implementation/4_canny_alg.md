@@ -86,11 +86,57 @@ Ovaj korak je već ispunjen, budući da kao input u našoj Keni implementaciji i
 
 ### Implementacija: Izračunavanje intenziteta gradijenta slike
 
-Kao što je rečeno u uvodu, da bismo došli do ovog dela, neophodno je da imamo parcijalne izvode po x i y. Za to:
+Svaki piksel ima svoje x i y komponente. Kao što je rečeno u uvodu, da bismo došli do ovog dela, neophodno je da imamo parcijalne izvode po x i y. Za to:
 - Formiramo Sobel kernele.
 - Vršimo konvoluciju sa input Gaussian blur slikom, i konkretnim Sobel kernelom, za x i y. Konvolucija je standardno ručno implementirana.
 
-Nakon ovoga možemo da računamo magnitudu (snagu) ivice i njenu orijentaciju.
+Konvolviranjem sa X Sobelovim kernelom, dobijamo koliko se intenzitet menja horizontalno, odnosno konvolviranjem sa Y Sobelovim kernelom koliko se intenzitet menja vertikalno.
+
+#### Šta je snaga gradijenta?
+
+Ako je rezultujuća matrica `convolved_img_x`, tada, ako $\left| convolved\_img\_x \right|$ ima veliku vrednost, to znači da postoji veća razlika između "levih i desnih" piksela, odnosno postoji istaknuta **vertikalna ivica**. Analogno, za `convolved_img_y`, ako $\left| convolved\_img\_y \right|$ ima veliku vrednost,  to znači da postoji veća razlika između "gornjih i donjih" piksela, odnosno postoji istaknuta **horizontalna ivica**.
+- To je **magnituda**, tj. **snaga**: koliko je nagla promena u osvetljenosti piksela (tj. pikselove numeričke vrednosti - veća vrednost, "svetliji" piksel, tj. bliži beloj boji, odnosno max uint8 vrednosti 255).
+- Velika magnituda: Jaka, istaknuta ivica. Samim tim, nagli prelaz između piksela.
+- Mala magnituda: Slaba ivica, blag prelaz između piksela.
+
+#### Šta je orijentacija?
+
+Orijentaciju treba posmatrati u odnosu na ŠTA se odnosi. Orijentacija se dobija kao arkus-tangens `convolved_img_y` i `convolved_img_x`. Samim tim, to je orijentacija **gradijenta**.
+- Orijentacija gradijenta govori nam u kom smeru se nalazi najveća promena intenziteta.
+- ALI, SAMA IVICA nalazi se normalno na taj pravac.
+
+Vizuelno se to može bolje zamisliti, sa OpenCV docs slike:
+
+<img src="../report_images/grad_edge_direciton.jpg" />
+
+
+### Implementacija: NMS - Ne-maksimalno potiskivanje
+
+Nakon konvolucije sa Sobel kernelima, dobili smo output (sliku) koja nam govori o intenzitetu promene osvetljenosti piksela.
+- Na toj granici, recimo između skroz crnog i skroz belog piksela, ta granica, tj. ta promena, ne ogleda se u jednom konkretnom pikselu, već u više susednih piksela.
+
+Ovo je problem. Nas zanima gde se nalazi ivica, nije nam potrebna "debela linija" od nekoliko piksela koji će reći "ivica je ovde negde".
+
+#### Zašto je debljina ivice problem?
+
+Ivica nam, obično, nikad nije finalni cilj. Ivica je jedan od međukoraka za dalju obradu (za detekciju nekih kontura, krugova, tablica u našem slučaju).
+- Šta god da je obrada, potrebna nam je **precizna lokacija** takve ivice, a ne "debela linija" koja kaže da je "ivica tu negde". Koji piksel je u tom slučaju ivica? Ta neodređenost može da napravi problem u kasnijoj obradi.
+
+#### NMS kao rešenje
+
+NMS (Non-Maximum Suppression) se koristi kao rešenje ovog problema. Više piksela koji su "grupisani oko ivice" hoćemo da proredimo tako da **ivica bude formirana od 1px**.
+
+<img src="../report_images/nms_before_after.png" width="400px" />
+*Slika iznad: pre NMS; Slika ispod: nakon NMS; Izvor slike: Canny Edge Detection, Computerphile, YouTube snimak*
+
+Izvor: Canny Edge Detection, Computerphile, YouTube snimak: https://www.youtube.com/watch?v=sRFM5IEqR2w&t
+
+#### Kako NMS radi
+
+NMS radi tako što, za svaki piksel, posmatra da li je njegova vrednost lokalni maksimum, odnosno da li je posmatrani piksel s većom vrednošću od njegovih suseda.
+- Ovde je bitno da su nam bitni susedni pikseli koji su "pored" ivice, a ne NA ivici.
+- "Na ivici" bi označavalo zapravo tu ivicu, nije nam bitno da li je ono što već znamo da je ivica dominantno ili ne. Hoćemo da tu ivicu stanjimo, tako da želimo da njene bordere učinimo manjim - zato nas zanimaju pikseli oko ivice.
+
 
 Izvor: OpenCV docs: 
 

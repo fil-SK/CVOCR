@@ -84,7 +84,7 @@ def find_strength_and_orientation_of_edge(conv_img_x: np.ndarray, conv_img_y: np
     """
     strength = np.hypot(conv_img_x, conv_img_y)                         # How strong the edge is at each pixel
     largest_gradient_value = strength.max()
-    scaled_strength_values = strength / largest_gradient_value          # Scales into [0, 1] range
+    scaled_strength_values = strength / largest_gradient_value          # Scales into [0, 1] range, but they are float values, we want normalized pixel values - so uint8
     strength_converted = scaled_strength_values * 255                   # Converted into [0, 255] range
 
     # Find the orientation of the edge
@@ -113,29 +113,27 @@ def check_for_direction_of_edge(angle: np.ndarray):
 
 def perform_nms(strength: np.ndarray, orientation: np.ndarray) -> np.ndarray:
     """
-    Performs Non-Maximum Suppression (NMS) TODO
+    For the found strength and orientation of edges, from Sobel convolved images, performs Non-Maximum Suppression (NMS).
+    NMS is used to "thin out" pixels along the edge, and have each edge consist of only 1px representing it.
 
     Args:
-        strength: TODO
-        orientation: TODO
+        strength (np.ndarray): Calculated gradient magnitude.
+        orientation (np.ndarray): Calculated gradient orientation.
     Returns:
-         (np.ndarray): TODO
+         (np.ndarray): Image with NMS applied.
     """
     img_magnitude_h, img_magnitude_w = strength.shape  # To iterate over every pixel
-    nms_output_img_array = np.zeros((img_magnitude_h, img_magnitude_w),
-                                dtype=np.float32)  # New image placeholder - will store the thinned edges after suppression
-
+    nms_output_img_array = np.zeros((img_magnitude_h, img_magnitude_w), dtype=np.float32)  # New image placeholder - will store the thinned edges after suppression
 
     # Convert radians to degrees
     angle = np.rad2deg(orientation)
     angle[angle < 0] += 180                 # Make angles positive
 
-
     # For each pixel(i, j) check on magnitude (strength) - on that pixel (so magnitude[i,j]), is that pixel strongest pixel along gradient orientation
     for i in range(1, img_magnitude_h - 1):
         for j in range(1, img_magnitude_w - 1):
-            pixel_ahead = MAX_UINT8     # q
-            pixel_before = MAX_UINT8    # r
+            pixel_ahead = MAX_UINT8
+            pixel_before = MAX_UINT8
 
             # Check for direction
             pixel_ahead_offset, pixel_before_offset = check_for_direction_of_edge(angle[i, j])
