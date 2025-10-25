@@ -58,3 +58,16 @@ putanja1(x,y) != putanja2(x,y)
 
 - Ako postoji promena putanje, onda smatramo da je u pitanju ugao, pa tu trenutnu tačku zadržavamo.
 - Ako nema promene putanje, onda smo "na ravnoj liniji" unutar konture, pa je to tačka koju možemo da zanemarimo tj. obrišemo iz konture.
+
+### Rezultat
+
+Ovo nije dalo dobre performanse, jer su mnoge konture obrisane na ovaj način. Najverovatniji razlog za to je primitivna implementacija njihovog algoritma koja, primenjena na stvarnu sliku, nije adekvatna, iako idejno deluje kao da jeste.
+
+Ovakva provera proverava promenu smera **na nivou piksela**, što se u praksi verovatno nikada neće desiti.
+
+## Pojednostavljenje kontura - uz aproksimaciju ugla
+
+Aproksimacija ugla uvodi neku vrstu tolerancije. Recimo da posmatramo tablicu, ali da je slika iskošena. Tada, na nivou piksela, ako analiziramo "ravnu" liniju, ona je kosa, pa se ta promena može detektovati kao ivica u prethodnoj implementaciji, iako ona to nije. Zato uvodimo toleranciju da ćemo promenu detektovati kao ivicu samo ako je većeg ugla od nekog ugla datog kao poređenje.
+- Npr. ako je dat ugao 30 stepeni, tada, tek ako se detektuje promena u pikselima veća od tog ugla, to ostavljamo kao relevantnu tačku ivice.
+
+Ovakav pristup, takođe, nije dao dobre performanse.

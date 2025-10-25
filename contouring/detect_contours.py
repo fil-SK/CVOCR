@@ -196,17 +196,17 @@ def simplify_contours(list_of_contours: list[list[tuple[int, int]]]) -> list[lis
         reduced_contour.append(contour[0])                  # Add starting point from this contour
 
         for i in range(1, len(contour) - 1):
-            prev_contour = contour[i - 1]
-            curr_contour = contour[i]
-            next_contour = contour[i + 1]
+            prev_point = contour[i - 1]
+            curr_point = contour[i]
+            next_point = contour[i + 1]
 
             # Find direction (x and y point) before and after
-            dir_1_x, dir_1_y = curr_contour[0] - prev_contour[0], curr_contour[1] - prev_contour[1]
-            dir_2_x, dir_2_y = next_contour[0] - curr_contour[0], next_contour[1] - curr_contour[1]
+            dir_1_x, dir_1_y = curr_point[0] - prev_point[0], curr_point[1] - prev_point[1]
+            dir_2_x, dir_2_y = next_point[0] - curr_point[0], next_point[1] - curr_point[1]
 
             # If there is change in direction - that's a corner, keep it
             if (dir_1_x, dir_1_y) != (dir_2_x, dir_2_y):
-                reduced_contour.append(curr_contour)
+                reduced_contour.append(curr_point)
 
         # Add the final point from this contour
         reduced_contour.append(contour[-1])
@@ -235,13 +235,13 @@ def simplify_contours_with_tolerance(list_of_contours: list[list[tuple[int, int]
         reduced_contour.append(contour[0])  # Add starting point from this contour
 
         for i in range(1, len(contour) - 1):
-            prev_contour = contour[i - 1]
-            curr_contour = contour[i]
-            next_contour = contour[i + 1]
+            prev_point = contour[i - 1]
+            curr_point = contour[i]
+            next_point = contour[i + 1]
 
             # Find direction (x and y point) before and after
-            dir_1_x, dir_1_y = curr_contour[0] - prev_contour[0], curr_contour[1] - prev_contour[1]
-            dir_2_x, dir_2_y = next_contour[0] - curr_contour[0], next_contour[1] - curr_contour[1]
+            dir_1_x, dir_1_y = curr_point[0] - prev_point[0], curr_point[1] - prev_point[1]
+            dir_2_x, dir_2_y = next_point[0] - curr_point[0], next_point[1] - curr_point[1]
 
             # Find the angle of each direction - in RADIANS
             direction_1_angle_rad = math.atan2(dir_1_y, dir_1_x)
@@ -249,7 +249,7 @@ def simplify_contours_with_tolerance(list_of_contours: list[list[tuple[int, int]
 
             # If there is change in direction, but with {angle} degrees tolerance, keep it
             if abs(direction_1_angle_rad - direction_2_angle_rad) > math.radians(angle_tolerance):
-                reduced_contour.append(curr_contour)
+                reduced_contour.append(curr_point)
 
         # Add the final point from this contour
         reduced_contour.append(contour[-1])
