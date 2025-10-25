@@ -36,13 +36,13 @@ Efektivno, hoćemo da povlačimo linije koje će aproksimirati putanje i onda pr
 
 ### Slikovit prikaz rada algoritma
 
-<img src="../report_images/dp_pt1.png" />
+<img src="../report_images/dp_pt1.png" width="800px" />
 
-<img src="../report_images/dp_pt2.png" />
+<img src="../report_images/dp_pt2.png" width="800px" />
 
-<img src="../report_images/dp_pt3.png" />
+<img src="../report_images/dp_pt3.png" width="800px" />
 
-<img src="../report_images/dp_pt4.png" />
+<img src="../report_images/dp_pt4.png" width="800px" />
 
 Izvor: Algorithms: Ramer-Douglas-Peucker Explained, Derick Rethans, YouTube snimak: https://www.youtube.com/watch?v=SbVXh5VtxKw
 - Odlično pojašnjava funkcionisanje algoritma
@@ -78,4 +78,4 @@ Izvođenje formule je dato ispod:
 
 <img src="../report_images/formula_pt1.jpg" width="600px" />
 
-<img src="../report_images/formula_pt2.jpg" width="600px" />
+<img src="../report_images/formula_pt2.jpeg" width="600px" />
