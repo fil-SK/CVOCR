@@ -6,21 +6,38 @@ from image_related_ops.load_image import IMAGE_STATES_DIR
 from image_related_ops.canny_algorithm import STRONG_EDGE_UINT8_VALUE
 
 
-def check_if_pixel_within_image(pixel_x:int ,pixel_y:int, img_h:int, img_w:int)->bool:
+def check_if_pixel_within_image(pixel_x:int ,pixel_y:int, img_h:int, img_w:int) -> bool:
+    """
+    Given the width and height of an image, checks whether the pixel (x,y) is within the boundaries of an image.
+
+    Args:
+        pixel_x (int): x coordinate of the pixel (x,y).
+        pixel_y (int): y coordinate of the pixel (x,y).
+        img_h (int): Height of the image.
+        img_w (int): Width of the image.
+
+    Returns:
+        (bool): True if pixel (x,y) is within the boundaries of an image. False otherwise.
+    """
     if pixel_x < img_w - 1 and pixel_y < img_h - 1:
         return True
     else:
         return False
 
 def check_for_neighboring_pixels(cannyfied_image: np.ndarray, pixel_x: int, pixel_y: int,
-                                 list_of_pixels_to_check:  list[tuple[int, int]], checked_pixels: np.ndarray):
+                                 list_of_pixels_to_check:  list[tuple[int, int]], checked_pixels: np.ndarray) -> None:
     """
-    TODO
+    Checks if, for pixel (x,y) his (8, at most) neighboring pixels are not already checked. If so, adds them
+    to the list of pixels that should be checked.
 
     Args:
-         TODO
+         cannyfied_image (np.ndarray): Image which was output of Canny edge detection algorithm.
+         pixel_x (int): x coordinate of the pixel (x,y).
+         pixel_y (int): y coordinate of the pixel (x,y).
+         list_of_pixels_to_check (list[tuple[int, int]]):
+         checked_pixels (np.ndarray): Boolean NumPy array, of same shape as `cannyfied_image`, with value 0 if the pixel is not checked, and 1 if it's checked.
     Returns:
-        TODO
+        (None)
     """
 
     img_h, img_w = cannyfied_image.shape
@@ -72,14 +89,18 @@ def check_for_neighboring_pixels(cannyfied_image: np.ndarray, pixel_x: int, pixe
 
 def detect_contours(cannyfied_image: np.ndarray) -> list[list[tuple[int, int]]]:
     """
-    Loops through all pixels and finds connected white pixels that form a contour.
+    Loops through all STRONG_EDGE pixels and finds connected white pixels that form a contour. For each STRONG_EDGE pixels,
+    check its neighboring pixels via DFS and, if they are not checked, add them to the list of unchecked pixels. Perform
+    this process recursively until STRONG_EDGE pixel is found, completing the current contour. The same process is performed
+    until all pixels are processed.
+
     Args:
-        TODO
+        cannyfied_image (np.ndarray): Image that is result of a Canny edge detection algorithm.
     Returns:
-        TODO
+        (list[list[tuple[int, int]]]): List of contours, where each contour is a list of points (x,y).
     """
 
-    contours = []
+    contours = []                                                   # Placeholder for list of contours
     checked_pixels = np.zeros_like(cannyfied_image, dtype=bool)     # Placeholder for same shaped NumPy array. Each pixel has value 0 - initially not checked
 
     img_h, img_w = cannyfied_image.shape
@@ -89,7 +110,7 @@ def detect_contours(cannyfied_image: np.ndarray) -> list[list[tuple[int, int]]]:
         for j in range(img_w):  # x
 
             # If pixel is white and wasn't checked before
-            if cannyfied_image[i, j] == 255 and not checked_pixels[i, j]:
+            if cannyfied_image[i, j] == STRONG_EDGE_UINT8_VALUE and not checked_pixels[i, j]:
 
                 # Start new contour
                 contour : list[tuple[int, int]] = []
@@ -239,35 +260,6 @@ def calculate_perpendicular_distance(point_for_distance: tuple[int, int], start_
         return numerator / denominator
 
 
-
-def approximate_polygon_contour(list_of_contours):
-    """
-    Uses Douglas-Peucker algorithm - simplified version.
-    """
-
-
-
-    dp_contours = []
-
-    for contour in list_of_contours:
-        if len(contour) < 3:
-            continue
-
-        # Calculate epsilon (tolerance)
-        # You can tweak the multiplier (0.01–0.05 range works best)
-        perimeter = 0.0
-        for i in range(len(contour)):
-            x1, y1 = contour[i]
-            x2, y2 = contour[(i + 1) % len(contour)]
-            perimeter += math.dist((x1, y1), (x2, y2))
-
-        epsilon = 0.02 * perimeter
-
-        simplified = douglas_peucker(contour, epsilon)
-        dp_contours.append(simplified)
-
-    return dp_contours
-
 def douglas_peucker(points_in_contour: list[int, int], epsilon: float):
 
     # First and last points
@@ -301,3 +293,30 @@ def douglas_peucker(points_in_contour: list[int, int], epsilon: float):
     else:
         # No points are over epsilon, that means all of them are close enough to the line, and we need to keep all of them
         return [start_point, end_point]
+
+
+def approximate_polygon_contour(list_of_contours):
+    """
+    Uses Douglas-Peucker algorithm - simplified version.
+    """
+
+    dp_contours = []
+
+    for contour in list_of_contours:
+        if len(contour) < 3:
+            continue
+
+        # Calculate epsilon (tolerance)
+        # You can tweak the multiplier (0.01–0.05 range works best)
+        perimeter = 0.0
+        for i in range(len(contour)):
+            x1, y1 = contour[i]
+            x2, y2 = contour[(i + 1) % len(contour)]
+            perimeter += math.dist((x1, y1), (x2, y2))
+
+        epsilon = 0.02 * perimeter
+
+        simplified = douglas_peucker(contour, epsilon)
+        dp_contours.append(simplified)
+
+    return dp_contours
