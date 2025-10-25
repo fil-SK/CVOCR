@@ -64,7 +64,6 @@ if __name__ == '__main__':
     simplified_contours_w_tolerance = simplify_contours_with_tolerance(contours, angle_tolerance=60)
     if simplified_contours_w_tolerance is not None:
         visualise_contrours(cannyfied_image, simplified_contours_w_tolerance, 5.1, "simplified_contours_tolerance_colored")
-
     # ------ STEP 4: Find contours END ------
 
     # ------ STEP 5: Contour sorting START ------

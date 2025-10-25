@@ -143,13 +143,23 @@ def detect_contours(cannyfied_image: np.ndarray) -> list[list[tuple[int, int]]]:
 
 def visualise_contrours(cannyfied_image: np.ndarray, contours: list[list[tuple[int, int]]], step, name) -> None:
     """
-    TODO
+    Wrapper around cv2 functions that display each contour, from the passed list of contours, over the image
+    that is output of Canny edge detection algorithm.
+
+    Args:
+         cannyfied_image (np.ndarray): Image that is result of a Canny edge detection algorithm.
+         contours (list[list[tuple[int, int]]]): List of contours, where each contour is a list of pixels (x,y).
+
+    Returns:
+        (None)
     """
 
     img_color = cv2.cvtColor(cannyfied_image, cv2.COLOR_GRAY2BGR)
     for contour_list in contours:
         for x, y in contour_list:
-            cv2.circle(img_color, (y, x), 1, (0, 255, 0), -1)       # TODO: Why (y,x) ???
+            cv2.circle(img_color, (y, x), 1, (0, 255, 0), -1)    # In Numpy, img[row_index, column_index]
+                                                                                    # first index is how far you go down (vertical position -y)
+                                                                                    # second index controls how far you go right (horizontal position - x)
 
     cv2.imshow("Contours", img_color)
     cv2.waitKey(0)
@@ -159,11 +169,17 @@ def visualise_contrours(cannyfied_image: np.ndarray, contours: list[list[tuple[i
     cv2.imwrite(path, img_color)
 
 
-
 def simplify_contours(list_of_contours: list[list[tuple[int, int]]]) -> list[list[tuple[int, int]]] | None:
     """
-    For each point, compare direction coming in and going out. If the direction changes it’s a corner so keep it.
-    Else it’s a straight line, so remove it.
+    For each point, compares direction coming in and going out:
+    - If the direction changes -> it’s a corner, keep it.
+    -> Else -> it’s a straight line, remove it.
+
+    Args:
+        list_of_contours (list[list[tuple[int, int]]]): List of contours, where each element is a contour, consisting of multiple points (x,y)
+
+    Returns:
+        (list[list[tuple[int, int]]]): Simplified list of contours, where each contour is a list of points (x,y).
     """
 
     print("Simplifying the contours")
