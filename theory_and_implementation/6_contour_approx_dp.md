@@ -1,0 +1,1 @@
+##Aproksimacija konture na mnogougao - DP algoritam

@@ -72,5 +72,3 @@ Aproksimacija ugla uvodi neku vrstu tolerancije. Recimo da posmatramo tablicu, a
 
 Ovakav pristup, takođe, nije dao dobre performanse.
 
-## Aproksimacija konture na mnogougao - DP algoritam
-

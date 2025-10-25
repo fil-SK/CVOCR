@@ -114,12 +114,21 @@ Keni algoritam sastoji se iz nekoliko faza:
 
 ### 5. Pronalaženje kontura na slici
 
-TODO
+Keni algoritam dao je na svom izlazu sliku koja se sastoji isključivo od jakih piksela (255) i piksela vrednošću 0. Jake piksele sada treba analizirati i iz njih detektovati konture, jer ćemo dalje te konture razmatrati kao pravougaonike (registarske tablice) iz kojih ćemo izvlačiti registarske brojeve.
+
+Ukratko, postupak se svodi na:
+
+- Detekcija svih kontura: Idemo piksel po piksel i, ako je taj piksel jak, po DFS-u proveravamo sve njegove susede koji su neposećeni, sve dok ne dođemo do nekog posećenog piksela, čime zatvaramo konturu.
+- Dodatno pojednostavljujemo detektovane konture - Bitni su nam samo ivični pikseli - oni koji formiraju konturu. Npr. za pravougaonik, bitni su nam samo ćoškovi, nisu nam bitni pikseli koji predstavljaju stranicu tj. ravnu liniju.
+
+<a href="./theory_and_implementation/5_detect_contours.md">Teorija i implementacija</a>
 
 ---
 
 ### 6. Aproksimacija kontura
 
-TODO
+Iako smo prethodnim pojednostavljivanjem smanjili broj tačaka, ovo se može dodatno poboljšati, korišćenjem nekih od algoritama za aproksimaciju linija. Algoritam koji je, izvorno, korišćen u kodu, jeste Daglas-Pojkerov algoritam, pa se ovde razvija njegova ručna implementacija.
+
+Za detaljnije informacije o implementaciji i algoritmu, pogledati: <a href="./theory_and_implementation/6_contour_approx_dp.md">Teorija i implementacija</a>
 
 ---
