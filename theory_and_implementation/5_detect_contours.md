@@ -71,3 +71,6 @@ Aproksimacija ugla uvodi neku vrstu tolerancije. Recimo da posmatramo tablicu, a
 - Npr. ako je dat ugao 30 stepeni, tada, tek ako se detektuje promena u pikselima veća od tog ugla, to ostavljamo kao relevantnu tačku ivice.
 
 Ovakav pristup, takođe, nije dao dobre performanse.
+
+## Aproksimacija konture na mnogougao - DP algoritam
+
