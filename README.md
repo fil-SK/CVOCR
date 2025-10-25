@@ -221,7 +221,7 @@ MH 20 EE 7602:
 
 #### yugo_zoomed_in.jpg
 
-<img src="./test_images/yugo_zoomed_in.jpg" width="100px" />
+<img src="./test_images/yugo_zoomed_in.JPG" width="100px" />
 
 - Cilj: Pokušaj tumačenja srpskih tablica.
 - Ispis: `\`
@@ -229,7 +229,7 @@ MH 20 EE 7602:
 
 #### yugo_zoomed_in_noBG.jpg
 
-<img src="./test_images/yugo_zoomed_in_noBG.jpg" width="100px" />
+<img src="./test_images/yugo_zoomed_in_noBG.JPG" width="100px" />
 
 - Cilj: Ista slika, ali bez grba Srbije (možda uzrokuje smetnju u čitanju niza slova).
 - Ispis: `\`
@@ -237,7 +237,7 @@ MH 20 EE 7602:
 
 #### yugo400.jpg
 
-<img src="./test_images/yugo400.jpg" width="100px" />
+<img src="./test_images/yugo400.JPG" width="100px" />
 
 - Cilj: Ista slika kao prethodna, ali manje rezolucije (sa 1500x1354 na 400x509).
 - Ispis: `BBG $13-JB}`
@@ -245,7 +245,7 @@ MH 20 EE 7602:
 
 #### yugo900custom.jpg
 
-<img src="./test_images/yugo900custom.jpg" width="100px" />
+<img src="./test_images/yugo900custom.JPG" width="100px" />
 
 - Cilj: Ista slika kao prethodna, malo veće rezolucije, obrisana slova i ručno uneta u Paint-u.
 - Ispis: `Fp oF`
