@@ -154,4 +154,46 @@ Originalna slika:
 
 Pretvaranje u grayscale:
 
-<img src="./image_states/" width="400px" /> 
+<img src="./image_states/skoda_test_1_grayscale.png" width="400px" /> 
+
+Primena Gaussian Blur-a:
+
+<img src="./image_states/skoda_test_2_gaussian_blur.png" width="400px" /> 
+
+Primena Sobel kernela (x i y, respektivno):
+
+<img src="./image_states/skoda_test_2.1_convolved_with_sobel_x.png" width="400px" />
+
+<img src="./image_states/skoda_test_2.2_convolved_with_sobel_y.png" width="400px" />
+
+Primena NMS-a:
+
+<img src="./image_states/skoda_test_2.3_after_nms.png" width="400px" />
+
+Primena Double Threshold-a:
+
+<img src="./image_states/skoda_test_2.4_after_double_threshold.png" width="400px" />
+
+Nakon potpuno završenog Canny edge detection-a (u odnosu na poslednji korak, izvršen hysteresis):
+
+<img src="./image_states/skoda_test_3_canny_edge_detection.png" width="400px" />
+
+Detekcija svih kontura:
+
+<img src="./image_states/skoda_test_4_contours_colored.png" width="400px" />
+
+Pokušaj običnog pojednostavljenja kontura:
+
+<img src="./image_states/skoda_test_5_simplified_contours_colored.png" width="400px" />
+
+Pokušaj pojednostavljenja kontura uz ugao tolerancije:
+
+<img src="./image_states/skoda_test_5.1_simplified_contours_tolerance_colored.png" width="400px" />
+
+Nadalje, korišćen originalni izvorni kod iz priloženog blog posta.
+
+Finalni rezultat OCR-a:
+
+```
+MH 20 EE 7602:
+```
