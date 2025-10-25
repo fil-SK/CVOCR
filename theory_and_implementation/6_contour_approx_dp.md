@@ -46,3 +46,36 @@ Efektivno, hoćemo da povlačimo linije koje će aproksimirati putanje i onda pr
 
 Izvor: Algorithms: Ramer-Douglas-Peucker Explained, Derick Rethans, YouTube snimak: https://www.youtube.com/watch?v=SbVXh5VtxKw
 - Odlično pojašnjava funkcionisanje algoritma
+
+## Implementacija
+
+- Algoritam ima wrapper funkciju koja prvo izračunava epsilon vrednost koju će koristiti, a zatim za svaku konturu poziva implementaciju DP algoritma.
+
+U originalnom kodu koristi se:
+
+```python
+epsilon = 0.02 * cv2.arcLength(contour, True)
+```
+
+pa je odatle iskorišćeno da se epsilon formira kao `0.02` pomnoženo dužinom te konture (zbirom udaljenosti svih tačaka u konturi).
+
+Daglas-Pojkerov algoritam implementiran je onako kako je i objašnjen iznad:
+- Poveže dve tačke.
+- Odredi normalno rastojanje svih tačaka na tom segmentu u odnosu na formiranu pravu.
+- Pronađe se tačka sa najvećim rastojanjem.
+- Za tu tačku, gleda se da li je ispod ili preko epsilon.
+    - Ako je ispod, uklanja se.
+    - Ako je preko, zadržava se, region se deli na podregion od početka pa do te tačke, i algoritam se ponavlja dalje, dok se sve tačke ne obrade.
+
+### Formula za normalno rastojanje
+
+Izvodi se iz dve formule:
+
+- Jednačina prave kroz dve tačke, data u implicitnom obliku
+- Normalna udaljenost tačke od prave
+
+Izvođenje formule je dato ispod:
+
+<img src="../report_images/formula_pt1.jpg" width="600px" />
+
+<img src="../report_images/formula_pt2.jpg" width="600px" />
