@@ -49,6 +49,7 @@ root
 - `main.py`: Početna tačka od koje kreće izvršavanje programa, iz kog se pozivaju sve funkcije.
 - `README.md`: Uputstvo / izveštaj
 - `test_output_log.txt`: Kopiran ispis konzole nakon izvršavanja za test sliku.
+- `requirements.txt`: Neophodni paketi za pokretanje koda.
 
 ## Instalacija i pokretanje
 
