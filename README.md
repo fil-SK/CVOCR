@@ -21,23 +21,34 @@ Finalni izgled fajl sistema izgleda ovako:
 
 ```
 root
+|--- contouring
+    |--- detect_contours.py
+|--- external_src
+    |--- gfg_impl.py
 |--- image_related_ops
     |--- load_image.py
     |--- grayscale.py
-|--- contouring
-    |--- detect_contours.py
+
 |--- test_images
 |--- main.py
 |--- README.md
 ```
 
 ### Pojašnjenje:
+- `contouring`: Folder sa funkcijama za rad sa konturama.
+- `external_src`: Folder sa funkcijama sa kodom iz originalnog blog posta.
 - `image_related_ops`: Folder u kom su skripte koje vrše opšte operacije sa slikom.
     - `load_image.py`: Učitava sliku preko PIL-a.
     - `grayscale.py`: Konvertuje sliku u crno-beli prikaz.
-`test_images`: Folder u kom se nalaze slike korišćene za primenu projekta.
+    - `gaussian_blur.py`: Primenjuje Gaussian blur efekat.
+    - `canny_algorithm.py`: Izvršava Canny edge detection algoritam.
+- `image_states`: Folder sa slikama koje predstavljaju međustanja tokom izvršavanja.
+- `report_images`: Folder sa slikama korišćene u izveštaju.
+`test_images`: Folder sa slikama za testiranje funkcionalnosti projekta.
+- `theory_and_implementation`: Folder sa markdown dokumentima koji predstavljaju produžetak izveštaja. Pokrivaju teoriju i implementaciju konkretnih funkcija.
 - `main.py`: Početna tačka od koje kreće izvršavanje programa, iz kog se pozivaju sve funkcije.
 - `README.md`: Uputstvo / izveštaj
+- `test_output_log.txt`: Kopiran ispis konzole nakon izvršavanja za test sliku.
 
 ## Instalacija i pokretanje
 
