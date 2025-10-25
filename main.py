@@ -8,7 +8,7 @@ from image_related_ops.grayscale import convert_to_grayscale
 from image_related_ops.load_image import load_image, save_current_image_state, display_resulting_image
 
 IMAGE_DIR = "./test_images"
-TARGET_IMAGE = "skoda_test.png"
+TARGET_IMAGE = "yugo400.jpg"
 DISPLAY_IMAGE = False
 
 if __name__ == '__main__':
