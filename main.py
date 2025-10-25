@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
 
     # ------ STEP 3: Canny edge detection algorithm START ------
-    cannyfied_image = canny_edge_detection(gaussian_blur_applied, low_threshold=30, high_threshold=60)      # TODO: Play around with these values and check how it responds to
+    cannyfied_image = canny_edge_detection(TARGET_IMAGE, gaussian_blur_applied, low_threshold=30, high_threshold=60)      # TODO: Play around with these values and check how it responds to
     if DISPLAY_IMAGE:
         display_resulting_image(cannyfied_image)
     save_current_image_state(cannyfied_image, TARGET_IMAGE, "3", "canny_edge_detection")
@@ -48,23 +48,23 @@ if __name__ == '__main__':
 
     # ------ STEP 4: Find contours START ------
     contours = detect_contours(cannyfied_image)
-    visualise_contrours(cannyfied_image, contours, 4, "contours_colored")
+    visualise_contrours(cannyfied_image, contours, TARGET_IMAGE, 4, "contours_colored")
 
     simplified_contours = simplify_contours(contours)
     if simplified_contours is not None:
-        visualise_contrours(cannyfied_image, simplified_contours, 5, "simplified_contours_colored")
+        visualise_contrours(cannyfied_image, simplified_contours, TARGET_IMAGE,  5, "simplified_contours_colored")
 
     # However, this implementation was too strict as it was expecting literal direction flip
     # In reality that is not the case, so we need to account for smaller degree changes, like 20 degrees e.g.
     simplified_contours_w_tolerance = simplify_contours_with_tolerance(contours, angle_tolerance=60)
     if simplified_contours_w_tolerance is not None:
-        visualise_contrours(cannyfied_image, simplified_contours_w_tolerance, 5.1, "simplified_contours_tolerance_colored")
+        visualise_contrours(cannyfied_image, simplified_contours_w_tolerance, TARGET_IMAGE,  5.1, "simplified_contours_tolerance_colored")
     # ------ STEP 4: Find contours END ------
 
 
     # ------ STEP 5: Line simplification DP-alg START ------
     dp_contours = approximate_polygon_contour(contours)
-    #visualise_contrours(cannyfied_image, dp_contours, 6, "dr_contoured")
+    #visualise_contrours(cannyfied_image, dp_contours, TARGET_IMAGE,  6, "dr_contoured")
     # ------ STEP 5: Line simplification DP-alg END ------
 
 

@@ -146,7 +146,7 @@ Do samog kraja, u radu, prikazan je originalni deo koda, radi pregleda pune funk
 
 ## Rezultati
 
-Testiramo funkcionalnosti na istoj slici koja je data i u originalnom radu.
+Testiramo funkcionalnosti na istoj slici koja je data i u originalnom radu. Nakon pokretanja koda, formiran je konzolni output, dat u `test_console_log.txt` fajlu.
 
 Originalna slika:
 
@@ -154,3 +154,4 @@ Originalna slika:
 
 Pretvaranje u grayscale:
 
+<img src="./image_states/" width="400px" /> 

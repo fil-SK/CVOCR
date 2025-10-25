@@ -141,7 +141,7 @@ def detect_contours(cannyfied_image: np.ndarray) -> list[list[tuple[int, int]]]:
     return contours
 
 
-def visualise_contrours(cannyfied_image: np.ndarray, contours: list[list[tuple[int, int]]], step, name) -> None:
+def visualise_contrours(cannyfied_image: np.ndarray, contours: list[list[tuple[int, int]]], image_name, step, name) -> None:
     """
     Wrapper around cv2 functions that display each contour, from the passed list of contours, over the image
     that is output of Canny edge detection algorithm.
@@ -154,6 +154,8 @@ def visualise_contrours(cannyfied_image: np.ndarray, contours: list[list[tuple[i
         (None)
     """
 
+    imgname, _ = os.path.splitext(image_name)
+
     img_color = cv2.cvtColor(cannyfied_image, cv2.COLOR_GRAY2BGR)
     for contour_list in contours:
         for x, y in contour_list:
@@ -165,7 +167,7 @@ def visualise_contrours(cannyfied_image: np.ndarray, contours: list[list[tuple[i
     cv2.waitKey(0)
 
     # Save contoured image
-    path = os.path.join(IMAGE_STATES_DIR, f"image_step_{step}_{name}.png")
+    path = os.path.join(IMAGE_STATES_DIR, f"{imgname}_{step}_{name}.png")
     cv2.imwrite(path, img_color)
 
 

@@ -243,7 +243,7 @@ def track_edge_by_hysteresis(double_threshold_output: np.ndarray, img_magnitude_
 
 
 
-def canny_edge_detection(blurred_img_ndarray: np.ndarray, low_threshold: int, high_threshold: int) -> np.ndarray:
+def canny_edge_detection(target_image: str, blurred_img_ndarray: np.ndarray, low_threshold: int, high_threshold: int) -> np.ndarray:
     """
     Perform Canny Edge Detection algorithm to detect all edges in an image. Function performs the following steps:
     - Preparing x and y Sobel kernels
@@ -254,6 +254,7 @@ def canny_edge_detection(blurred_img_ndarray: np.ndarray, low_threshold: int, hi
     - Hysteresis, for edge tracking
 
     Args:
+        target_image (str): Name of target image.
         blurred_img_ndarray (np.ndarray): Image blurred with Gaussian Blur.
         low_threshold (int): If edge value is lower than this threshold, it's definitely a noise.
         high_threshold (int): If edge value is equal or greater than this threshold, it's definitely an edge.
@@ -271,8 +272,8 @@ def canny_edge_detection(blurred_img_ndarray: np.ndarray, low_threshold: int, hi
     convolved_img_y = perform_convolution_image_sobel_filter(blurred_img_ndarray, sobel_y)
 
     # Save image after this step
-    save_current_image_state(convolved_img_x, "image", "2.1", "convolved_with_sobel_x")
-    save_current_image_state(convolved_img_y, "image", "2.2", "convolved_with_sobel_y")
+    save_current_image_state(convolved_img_x, target_image, "2.1", "convolved_with_sobel_x")
+    save_current_image_state(convolved_img_y, target_image, "2.2", "convolved_with_sobel_y")
 
     # Find the strength (magnitude) and orientation of the edge
     strength, orientation = find_strength_and_orientation_of_edge(convolved_img_x, convolved_img_y)
@@ -280,12 +281,12 @@ def canny_edge_detection(blurred_img_ndarray: np.ndarray, low_threshold: int, hi
     ## Perform NMS
     print("Performing NMS")
     nms_output_img_array = perform_nms(strength, orientation)
-    save_current_image_state(nms_output_img_array, "image", "2.3", "after_nms")
+    save_current_image_state(nms_output_img_array, target_image, "2.3", "after_nms")
 
     # Perform double-threshold
     print("Performing Double Threshold")
     double_threshold_output = perform_double_threshold(nms_output_img_array, low_threshold=low_threshold, high_threshold=high_threshold)
-    save_current_image_state(double_threshold_output, "image", "2.4", "after_double_threshold")
+    save_current_image_state(double_threshold_output, target_image, "2.4", "after_double_threshold")
 
     # Perform hysteresis step
     print("Tracking edge by Hysteresis step")

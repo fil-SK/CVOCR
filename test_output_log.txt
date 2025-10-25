@@ -1,0 +1,39 @@
+C:\Users\SK\Desktop\CVOCR\.venv\Scripts\python.exe C:\Users\SK\Desktop\CVOCR\main.py 
+Loading an image ./test_images/skoda_test.png
+Original image shape: (423, 616, 3)
+
+Turning an image into grayscale.
+Grayscale image's shape: (423, 616)
+Saving image, step 1: grayscale
+Saved image on: image_states\skoda_test_1_grayscale.png
+
+Saving image, step 2: gaussian_blur
+Saved image on: image_states\skoda_test_2_gaussian_blur.png
+
+Performing Canny Edge Detection
+Preparing Sobel kernel
+Convolving image with Sobel kernel
+Saving image, step 2.1: convolved_with_sobel_x
+Saved image on: image_states\skoda_test_2.1_convolved_with_sobel_x.png
+
+Saving image, step 2.2: convolved_with_sobel_y
+Saved image on: image_states\skoda_test_2.2_convolved_with_sobel_y.png
+
+Performing NMS
+Saving image, step 2.3: after_nms
+Saved image on: image_states\skoda_test_2.3_after_nms.png
+
+Performing Double Threshold
+Saving image, step 2.4: after_double_threshold
+Saved image on: image_states\skoda_test_2.4_after_double_threshold.png
+
+Tracking edge by Hysteresis step
+Saving image, step 3: canny_edge_detection
+Saved image on: image_states\skoda_test_3_canny_edge_detection.png
+
+[ WARN:0@8.924] global loadsave.cpp:1063 cv::imwrite_ Unsupported depth image for selected encoder is fallbacked to CV_8U.
+Simplifying the contours
+Simplifying the contours, with 60 degrees tolerance.
+MH 20 EE 7602:
+
+Process finished with exit code 0
