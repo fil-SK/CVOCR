@@ -128,7 +128,22 @@ Ukratko, postupak se svodi na:
 ### 6. Aproksimacija kontura
 
 Iako smo prethodnim pojednostavljivanjem smanjili broj tačaka, ovo se može dodatno poboljšati, korišćenjem nekih od algoritama za aproksimaciju linija. Algoritam koji je, izvorno, korišćen u kodu, jeste Daglas-Pojkerov algoritam, pa se ovde razvija njegova ručna implementacija.
+- Ovaj algoritam pojednostavljuje mnogougle oblike (konture), tako što uklanja koliko god tačaka je u mogućnosti, tako da se originalni oblik, suštinski, zadrži.
 
 Za detaljnije informacije o implementaciji i algoritmu, pogledati: <a href="./theory_and_implementation/6_contour_approx_dp.md">Teorija i implementacija</a>
 
 ---
+
+### 7. Nastavak
+
+Budući da koraci 5 i 6 nisu ispunjeni u potpunosti (njihov rezultat nije mogao da se validira, jer na test primerima nisu bili ispravni), stalo se sa daljom ručnom implementacijom pipeline-a.
+
+Suštinski, odrađen je većinski posao za samu funkcionalnost. Koraci koji su urađeni, a koji nisu u potpunosti ispravni, barem slikovito demonstriraju šta je to što je trebalo da se ispuni.
+
+Do samog kraja, u radu, prikazan je originalni deo koda, radi pregleda pune funkcionalnosti.
+
+---
+
+## Rezultati
+
+- TODO
