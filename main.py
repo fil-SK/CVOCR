@@ -1,8 +1,3 @@
-import numpy as np
-from PIL import Image
-import matplotlib.pyplot as plt
-
-
 from contouring.detect_contours import detect_contours, visualise_contrours, simplify_contours, \
     simplify_contours_with_tolerance, approximate_polygon_contour
 from external_src.gfg_impl import gfg_implementation
@@ -74,5 +69,5 @@ if __name__ == '__main__':
 
 
     # ------ STEP 6: Original implementer code START ------
-    gfg_implementation()
+    gfg_implementation(IMAGE_DIR, TARGET_IMAGE)
     # ------ STEP 6: Original implementer code END ------

@@ -7,10 +7,8 @@ import matplotlib.pyplot as plt
 import cv2
 import pytesseract
 
-from main import IMAGE_DIR, TARGET_IMAGE
 
-
-def gfg_implementation():
+def gfg_implementation(IMAGE_DIR, TARGET_IMAGE):
     pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 

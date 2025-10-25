@@ -260,8 +260,19 @@ def simplify_contours_with_tolerance(list_of_contours: list[list[tuple[int, int]
 
 
 def calculate_perpendicular_distance(point_for_distance: tuple[int, int], start_point: tuple[int, int], end_point: tuple[int, int])-> float:
+    """
+    For the `start_point` and `end_point`, of a line that should act as an approximation, calculates perpendicular distance
+    for the provided `point_for_distance`.
 
-    # Could be much more efficiently implmented via vectors
+    Args:
+        point_for_distance (tuple[int, int]): Point to calculate perpendicular distance for.
+        start_point (tuple[int, int]): Start point of the line.
+        end_point (tuple[int, int]): End point of the line.
+
+    Returns:
+        (float): Perpendicular distance for the point `point_for_distance`.
+    """
+    # Could be much more efficiently implemented via vectors
 
     x, y = point_for_distance
     x1, y1 = start_point
@@ -276,8 +287,18 @@ def calculate_perpendicular_distance(point_for_distance: tuple[int, int], start_
         return numerator / denominator
 
 
-def douglas_peucker(points_in_contour: list[int, int], epsilon: float):
+def douglas_peucker(points_in_contour: list[tuple[int, int]], epsilon: float) -> tuple[tuple[int, int], ...] | list[
+    tuple[int, int]]:
+    """
+    Performs the Douglas-Peucker algorithm.
 
+    Args:
+        points_in_contour (list[tuple[int, int]]): List of points (x,y) in contour that should be either kept or removed, for the approximation.
+        epsilon (float): Epsilon parameter, tolerance for the perpendicular distance, that determines whether the point is kept or removed.
+
+    Returns:
+        (tuple[int, int]): Start and end point for the line that represents an approximation over specific segment (if fully reduced) or list of points that exist on that segment (if no approximation is performed).
+    """
     # First and last points
     start_point = points_in_contour[0]
     end_point = points_in_contour[-1]
@@ -311,9 +332,15 @@ def douglas_peucker(points_in_contour: list[int, int], epsilon: float):
         return [start_point, end_point]
 
 
-def approximate_polygon_contour(list_of_contours):
+def approximate_polygon_contour(list_of_contours: list[list[tuple[int, int]]]):
     """
-    Uses Douglas-Peucker algorithm - simplified version.
+    Calculates epsilon to be used for Douglas-Peucker algorithm and then calls that algorithm for each contour
+    from the provided contours list.
+
+    Args:
+        list_of_contours (list[list[tuple[int, int]]]): List of contours that should be approximated.
+    Returns:
+        Simplified approximation of the contours, consisting of only necessary points.
     """
 
     dp_contours = []
@@ -323,7 +350,6 @@ def approximate_polygon_contour(list_of_contours):
             continue
 
         # Calculate epsilon (tolerance)
-        # You can tweak the multiplier (0.01–0.05 range works best)
         perimeter = 0.0
         for i in range(len(contour)):
             x1, y1 = contour[i]

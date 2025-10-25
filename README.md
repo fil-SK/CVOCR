@@ -146,4 +146,11 @@ Do samog kraja, u radu, prikazan je originalni deo koda, radi pregleda pune funk
 
 ## Rezultati
 
-- TODO
+Testiramo funkcionalnosti na istoj slici koja je data i u originalnom radu.
+
+Originalna slika:
+
+<img src="./report_images/results_step_0.png" width="400px" />
+
+Pretvaranje u grayscale:
+
